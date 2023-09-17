@@ -5,7 +5,7 @@ import { FiSearch } from "react-icons/fi";
 import { BiChevronDown } from "react-icons/bi";
 const Navbar = () => {
   return (
-    <div className="bg-amazon-dark min-h-[12vh] flex items-center px-10 h-full text-white gap-10">
+    <nav className="bg-amazon-dark min-h-[12vh] flex items-center px-10 h-full text-white gap-10">
       <Link
         href="/"
         className="text-2xl font-semibold text-gray-900 dark:text-white"
@@ -54,7 +54,7 @@ const Navbar = () => {
           </span>
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
 

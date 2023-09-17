@@ -3,14 +3,16 @@
 import React from "react";
 import { usePathname } from "next/navigation";
 import { Navbar } from "@/components/client/navbar";
+import { Footer } from "@/components/client/footer";
 
 const ClientStoreLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   return !pathname.includes("login") ? (
-    <>
+    <div className="flex flex-col min-h-[100vh]">
       <Navbar />
-      {children}
-    </>
+      <main className="flex-1">{children}</main>
+      <Footer />
+    </div>
   ) : (
     children
   );
