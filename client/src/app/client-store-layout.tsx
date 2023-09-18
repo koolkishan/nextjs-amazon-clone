@@ -10,7 +10,7 @@ const ClientStoreLayout = ({ children }: { children: React.ReactNode }) => {
   return !pathname.includes("login") ? (
     <div className="flex flex-col min-h-[100vh]">
       <Navbar />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 min-h-[100vh]">{children}</main>
       <Footer />
     </div>
   ) : (
