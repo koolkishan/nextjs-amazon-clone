@@ -10,6 +10,7 @@ client/node_modules/
 
 # next.js
 client/.next/
+client/yarn.lock
 /out/
 
 # production

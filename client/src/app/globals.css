@@ -102,3 +102,12 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.link-hover {
+  cursor: pointer;
+  width: max-content;
+}
+
+.link-hover:hover {
+  color: #ff9900;
+}
