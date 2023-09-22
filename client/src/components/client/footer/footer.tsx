@@ -60,7 +60,7 @@ const Footer = () => {
                 className="text-base flex flex-col gap-1 font-light"
               >
                 {section.links.map((link) => (
-                  <li key={link} className="cursor-pointer">
+                  <li key={link} className="cursor-pointer link-hover">
                     {link}
                   </li>
                 ))}

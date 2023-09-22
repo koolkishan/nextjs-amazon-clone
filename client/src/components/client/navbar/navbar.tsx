@@ -3,7 +3,12 @@ import Link from "next/link";
 import React from "react";
 import { FiSearch } from "react-icons/fi";
 import { BiChevronDown } from "react-icons/bi";
+import { useRouter } from "next/navigation";
 const Navbar = () => {
+  const handleSearch = () => {
+    router.push("/search");
+  };
+  const router = useRouter();
   return (
     <nav className="bg-amazon-dark min-h-[12vh] flex items-center px-10 h-full text-white gap-10">
       <Link
@@ -32,7 +37,10 @@ const Navbar = () => {
           className="w-full rounded-l-sm h-12 outline-none border-none pl-5 text-black"
           placeholder="Search Products"
         />
-        <button className="h-12 w-14 bg-amazon-primary rounded-r-sm outline-none border-none text-2xl flex items-center justify-center hover:bg-amazon-secondary transition-all duration-300">
+        <button
+          className="h-12 w-14 bg-amazon-primary rounded-r-sm outline-none border-none text-2xl flex items-center justify-center hover:bg-amazon-secondary transition-all duration-300"
+          onClick={handleSearch}
+        >
           <FiSearch />
         </button>
       </div>
@@ -45,7 +53,7 @@ const Navbar = () => {
           <BiChevronDown />
         </div>
       </div>
-      <div className="cursor-pointer">
+      <div className="cursor-pointer" onClick={() => router.push("/cart")}>
         <div className="flex items-end relative">
           <Image src="/cart.png" alt="cart" height={40} width={40} />
           <span className="font-medium">Cart</span>
