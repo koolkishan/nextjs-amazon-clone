@@ -2,7 +2,10 @@ import { Navbar } from "@/components/client/navbar";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import ClientStoreLayout from "./client-store-layout";
+import ClientStoreLayout from "./layouts/client-store-layout";
+import AdminLayout from "./layouts/admin-layout";
+import { usePathname } from "next/navigation";
+import Layouts from "./layouts/layouts";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -19,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ClientStoreLayout>{children}</ClientStoreLayout>
+        <Layouts>{children}</Layouts>
       </body>
     </html>
   );
