@@ -2,9 +2,6 @@ import { Navbar } from "@/components/client/navbar";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import ClientStoreLayout from "./layouts/client-store-layout";
-import AdminLayout from "./layouts/admin-layout";
-import { usePathname } from "next/navigation";
 import Layouts from "./layouts/layouts";
 const inter = Inter({ subsets: ["latin"] });
 
