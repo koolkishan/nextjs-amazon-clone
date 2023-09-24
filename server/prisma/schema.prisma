@@ -11,6 +11,7 @@ model User {
   createdAt DateTime @default(now())
   firstName String?
   id        String   @id @default(cuid())
+  isAdmin   Boolean?
   lastName  String?
   orders    Order[]
   password  String

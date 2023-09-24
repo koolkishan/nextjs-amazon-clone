@@ -6,6 +6,7 @@ export type User = {
   createdAt: Date;
   firstName: string | null;
   id: string;
+  isAdmin: boolean | null;
   lastName: string | null;
   orders?: Array<Order>;
   reviews?: Array<Review>;
