@@ -64,7 +64,7 @@ export class CategoryControllerBase {
     });
   }
 
-  @common.UseInterceptors(AclFilterResponseInterceptor)
+  // @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get()
   @swagger.ApiOkResponse({ type: [Category] })
   @ApiNestedQuery(CategoryFindManyArgs)
@@ -85,6 +85,7 @@ export class CategoryControllerBase {
         id: true,
         name: true,
         updatedAt: true,
+        _count: true,
       },
     });
   }

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Table,
@@ -10,28 +10,39 @@ import {
   TableCell,
   Input,
   Button,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
-  Chip,
-  User,
   Pagination,
+  Tooltip,
 } from "@nextui-org/react";
-// import { PlusIcon } from "./PlusIcon";
-// import { VerticalDotsIcon } from "./VerticalDotsIcon";
 
-import { columns, users, statusOptions } from "./data";
-import { FaChevronDown, FaPlus, FaSearch } from "react-icons/fa";
-import { BiDotsVerticalRounded } from "react-icons/bi";
+import { columns } from "./data";
+import {
+  FaChevronDown,
+  FaEdit,
+  FaEye,
+  FaPlus,
+  FaSearch,
+  FaTrashAlt,
+} from "react-icons/fa";
 
-const statusColorMap = {
-  active: "success",
-  paused: "danger",
-  vacation: "warning",
-};
+import { getAllCategories } from "@/lib/api/category";
 
 export default function Page() {
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    const getData = async () => {
+      const results = await getAllCategories();
+      if (results) {
+        console.log({ results });
+        setCategories(results);
+      }
+    };
+    getData();
+  }, []);
+
+  const handleDelete = async () => {};
+
+  const handleEdit = async () => {};
+
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
 
@@ -48,24 +59,16 @@ export default function Page() {
   const headerColumns = columns;
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...users];
+    let filteredUsers = [...categories];
 
     if (hasSearchFilter) {
       filteredUsers = filteredUsers.filter((user) =>
         user.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
-    if (
-      statusFilter !== "all" &&
-      Array.from(statusFilter).length !== statusOptions.length
-    ) {
-      filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.status)
-      );
-    }
 
     return filteredUsers;
-  }, [users, filterValue, statusFilter]);
+  }, [categories, filterValue]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -90,52 +93,22 @@ export default function Page() {
     const cellValue = user[columnKey];
 
     switch (columnKey) {
-      case "name":
-        return (
-          <User
-            avatarProps={{ radius: "lg", src: user.avatar }}
-            description={user.email}
-            name={cellValue}
-          >
-            {user.email}
-          </User>
-        );
-      case "role":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-            <p className="text-bold text-tiny capitalize text-default-400">
-              {user.team}
-            </p>
-          </div>
-        );
-      case "status":
-        return (
-          <Chip
-            className="capitalize"
-            color={statusColorMap[user.status]}
-            size="sm"
-            variant="flat"
-          >
-            {cellValue}
-          </Chip>
-        );
+      case "products": {
+        return <div>{user["_count"].products}</div>;
+      }
       case "actions":
         return (
-          <div className="relative flex justify-end items-center gap-2">
-            <Dropdown>
-              <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
-                  <BiDotsVerticalRounded />
-                  {/* <VerticalDotsIcon className="text-default-300" /> */}
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem>View</DropdownItem>
-                <DropdownItem>Edit</DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
+          <div className="relative flex justify-start items-center gap-5">
+            <Tooltip content="Edit Category" color="default">
+              <span className="text-lg text-blue-400 cursor-pointer active:opacity-50">
+                <FaEdit />
+              </span>
+            </Tooltip>
+            <Tooltip color="danger" content="Delete Category">
+              <span className="text-lg text-danger cursor-pointer active:opacity-50">
+                <FaTrashAlt />
+              </span>
+            </Tooltip>
           </div>
         );
       default:
@@ -195,7 +168,7 @@ export default function Page() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {users.length} categories
+            Total {categories.length} categories
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -215,7 +188,7 @@ export default function Page() {
     filterValue,
     statusFilter,
     onRowsPerPageChange,
-    users.length,
+    categories.length,
     onSearchChange,
     hasSearchFilter,
   ]);

@@ -61,7 +61,7 @@ export class AuthService {
         password,
         firstName,
         lastName,
-        roles: ["admin"],
+        roles: ["user"],
       },
     });
     // If creating a new user fails throw an error
