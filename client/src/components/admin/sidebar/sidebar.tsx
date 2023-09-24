@@ -74,9 +74,9 @@ const Side = () => {
   };
 
   return (
-    <div className="max-h-[100vh] overflow-hidden">
+    <div className="min-h-[100vh]  overflow-hidden">
       <Sidebar
-        className="h-[100vh] max-h-[100vh] overflow-hidden"
+        className="h-full overflow-hidden"
         rootStyles={{
           [`.${sidebarClasses.container}`]: {
             backgroundColor: "#141B24",
