@@ -1,7 +1,7 @@
 import { ArgsType, Field } from "@nestjs/graphql";
 import { ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
-import { Credentials } from "./Credentials";
+import { Credentials, SignupCredentials } from "./Credentials";
 
 @ArgsType()
 export class LoginArgs {
@@ -9,4 +9,10 @@ export class LoginArgs {
   @Type(() => Credentials)
   @ValidateNested()
   credentials!: Credentials;
+}
+
+@ArgsType()
+export class SignupArgs {
+  @Field(() => Credentials, { nullable: false })
+  credentials!: SignupCredentials;
 }

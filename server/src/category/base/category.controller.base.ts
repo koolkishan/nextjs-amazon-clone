@@ -31,8 +31,6 @@ import { ProductFindManyArgs } from "../../product/base/ProductFindManyArgs";
 import { Product } from "../../product/base/Product";
 import { ProductWhereUniqueInput } from "../../product/base/ProductWhereUniqueInput";
 
-@swagger.ApiBearerAuth()
-@common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
 export class CategoryControllerBase {
   constructor(
     protected readonly service: CategoryService,
@@ -46,6 +44,11 @@ export class CategoryControllerBase {
     action: "create",
     possession: "any",
   })
+  @swagger.ApiBearerAuth()
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
@@ -130,6 +133,11 @@ export class CategoryControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
+  @swagger.ApiBearerAuth()
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   async update(
     @common.Param() params: CategoryWhereUniqueInput,
     @common.Body() data: CategoryUpdateInput
@@ -166,6 +174,11 @@ export class CategoryControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
+  @swagger.ApiBearerAuth()
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   async delete(
     @common.Param() params: CategoryWhereUniqueInput
   ): Promise<Category | null> {
@@ -244,6 +257,11 @@ export class CategoryControllerBase {
     action: "update",
     possession: "any",
   })
+  @swagger.ApiBearerAuth()
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   async connectProducts(
     @common.Param() params: CategoryWhereUniqueInput,
     @common.Body() body: ProductWhereUniqueInput[]
@@ -266,6 +284,11 @@ export class CategoryControllerBase {
     action: "update",
     possession: "any",
   })
+  @swagger.ApiBearerAuth()
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   async updateProducts(
     @common.Param() params: CategoryWhereUniqueInput,
     @common.Body() body: ProductWhereUniqueInput[]
@@ -288,6 +311,11 @@ export class CategoryControllerBase {
     action: "update",
     possession: "any",
   })
+  @swagger.ApiBearerAuth()
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   async disconnectProducts(
     @common.Param() params: CategoryWhereUniqueInput,
     @common.Body() body: ProductWhereUniqueInput[]

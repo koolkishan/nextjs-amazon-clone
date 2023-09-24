@@ -31,8 +31,6 @@ import { ReviewFindManyArgs } from "../../review/base/ReviewFindManyArgs";
 import { Review } from "../../review/base/Review";
 import { ReviewWhereUniqueInput } from "../../review/base/ReviewWhereUniqueInput";
 
-@swagger.ApiBearerAuth()
-@common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
 export class ProductControllerBase {
   constructor(
     protected readonly service: ProductService,
@@ -49,6 +47,11 @@ export class ProductControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
+  @swagger.ApiBearerAuth()
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   async create(@common.Body() data: ProductCreateInput): Promise<Product> {
     return await this.service.create({
       data: {
@@ -199,6 +202,11 @@ export class ProductControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
+  @swagger.ApiBearerAuth()
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   async update(
     @common.Param() params: ProductWhereUniqueInput,
     @common.Body() data: ProductUpdateInput
@@ -266,6 +274,11 @@ export class ProductControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
+  @swagger.ApiBearerAuth()
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   async delete(
     @common.Param() params: ProductWhereUniqueInput
   ): Promise<Product | null> {
@@ -380,6 +393,11 @@ export class ProductControllerBase {
     action: "update",
     possession: "any",
   })
+  @swagger.ApiBearerAuth()
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   async updateReviews(
     @common.Param() params: ProductWhereUniqueInput,
     @common.Body() body: ReviewWhereUniqueInput[]
@@ -402,6 +420,11 @@ export class ProductControllerBase {
     action: "update",
     possession: "any",
   })
+  @swagger.ApiBearerAuth()
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   async disconnectReviews(
     @common.Param() params: ProductWhereUniqueInput,
     @common.Body() body: ReviewWhereUniqueInput[]

@@ -28,8 +28,6 @@ import { ReviewFindManyArgs } from "./ReviewFindManyArgs";
 import { ReviewUpdateInput } from "./ReviewUpdateInput";
 import { Review } from "./Review";
 
-@swagger.ApiBearerAuth()
-@common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
 export class ReviewControllerBase {
   constructor(
     protected readonly service: ReviewService,
@@ -43,6 +41,11 @@ export class ReviewControllerBase {
     action: "create",
     possession: "any",
   })
+  @swagger.ApiBearerAuth()
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
@@ -180,6 +183,11 @@ export class ReviewControllerBase {
     action: "update",
     possession: "any",
   })
+  @swagger.ApiBearerAuth()
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
@@ -244,6 +252,11 @@ export class ReviewControllerBase {
     action: "delete",
     possession: "any",
   })
+  @swagger.ApiBearerAuth()
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
