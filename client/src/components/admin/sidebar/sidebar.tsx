@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { BiSolidCategory } from "react-icons/bi";
 import { FaHome, FaShoppingCart } from "react-icons/fa";
 import { BsFillBarChartFill, BsPhoneFill } from "react-icons/bs";
@@ -16,10 +16,12 @@ import {
 
 const Side = () => {
   const router = useRouter();
-
+  const pathname = usePathname();
   // State to keep track of the currently selected item
   const [selectedItem, setSelectedItem] = useState("/admin/dashboard");
-
+  useEffect(() => {
+    setSelectedItem(pathname);
+  }, [pathname]);
   const menuItems = [
     { label: "Dashboard", icon: <FaHome />, link: "/admin/dashboard" },
     {
@@ -91,7 +93,6 @@ const Side = () => {
           menuItemStyles={{
             button: ({ level, active, disabled }) => {
               const backgroundColor = level === 0 ? "#141B24" : "#222e3d";
-              console.log({ active }, "as");
 
               return {
                 backgroundColor: active ? "#ff9900" : backgroundColor,

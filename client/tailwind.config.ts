@@ -12,6 +12,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        primary: "#ff9900",
         "amazon-dark": "#141B24",
         "amazon-background": "#eef3f9",
         "amazon-primary": "#ff9900",
