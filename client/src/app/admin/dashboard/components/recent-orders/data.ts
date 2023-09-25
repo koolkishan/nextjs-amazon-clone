@@ -2,9 +2,13 @@ import React from "react";
 
 const columns = [
   { name: "NAME", uid: "name" },
-  { name: "ROLE", uid: "role" },
-  { name: "STATUS", uid: "status" },
-  { name: "ACTIONS", uid: "actions" },
+  { name: "ORDER", uid: "orderId" },
+  {
+    name: "REVENUE",
+    uid: "revenue",
+  },
+  // { name: "STATUS", uid: "status" },
+  // { name: "ACTIONS", uid: "actions" },
 ];
 
 const users = [
@@ -12,11 +16,11 @@ const users = [
     id: 1,
     name: "Tony Reichert",
     role: "CEO",
+    revenue: "$300",
     team: "Management",
     status: "active",
     age: "29",
-    avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-    email: "tony.reichert@example.com",
+    orderId: "#amz-13",
   },
   {
     id: 2,
@@ -25,8 +29,10 @@ const users = [
     team: "Development",
     status: "paused",
     age: "25",
+    revenue: "$500",
     avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d",
     email: "zoey.lang@example.com",
+    orderId: "#amz-123",
   },
   {
     id: 3,
@@ -35,8 +41,10 @@ const users = [
     team: "Development",
     status: "active",
     age: "22",
+    revenue: "$100",
     avatar: "https://i.pravatar.cc/150?u=a04258114e29026702d",
     email: "jane.fisher@example.com",
+    orderId: "#amz-22",
   },
   {
     id: 4,
@@ -44,9 +52,11 @@ const users = [
     role: "Community Manager",
     team: "Marketing",
     status: "vacation",
+    revenue: "$5000",
     age: "28",
     avatar: "https://i.pravatar.cc/150?u=a048581f4e29026701d",
     email: "william.howard@example.com",
+    orderId: "#amz-15",
   },
   {
     id: 5,
@@ -55,8 +65,10 @@ const users = [
     team: "Sales",
     status: "active",
     age: "24",
+    revenue: "$3200",
     avatar: "https://i.pravatar.cc/150?u=a092581d4ef9026700d",
     email: "kristen.cooper@example.com",
+    orderId: "#amz-14",
   },
 ];
 

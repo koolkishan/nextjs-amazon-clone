@@ -5,21 +5,22 @@ import {
   Bar,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
   Legend,
+  ResponsiveContainer,
 } from "recharts";
 
 const MonthlySales = ({ data }) => {
   return (
-    <BarChart width={800} height={400} data={data}>
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="month" />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      <Bar dataKey="sales" fill="#8884d8" />
-    </BarChart>
+    <ResponsiveContainer height="100%" width="100%">
+      <BarChart data={data}>
+        <XAxis dataKey="month" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Bar dataKey="sales" fill="#ffb700" stroke="#ff9900" />
+      </BarChart>
+    </ResponsiveContainer>
   );
 };
 

@@ -8,18 +8,26 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  ResponsiveContainer,
 } from "recharts";
 
 const DailyRevenue = ({ data }) => {
   return (
-    <AreaChart width={800} height={400} data={data}>
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="date" />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      <Area type="monotone" dataKey="revenue" fill="#8884d8" stroke="#8884d8" />
-    </AreaChart>
+    <ResponsiveContainer height="100%" width="100%">
+      <AreaChart data={data}>
+        {/* <CartesianGrid strokeDasharray="3 3" /> */}
+        <XAxis dataKey="date" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Area
+          type="monotone"
+          dataKey="revenue"
+          fill="#ffb700"
+          stroke="#ff9900"
+        />
+      </AreaChart>
+    </ResponsiveContainer>
   );
 };
 

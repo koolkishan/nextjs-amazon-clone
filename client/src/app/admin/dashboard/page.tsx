@@ -5,6 +5,7 @@ import { CategorySales } from "./components/charts/category-sales";
 import DailyRevenue from "./components/charts/daily-revenue/daily-revenue";
 import { MonthlySales } from "./components/charts/monthly-sales";
 import { RecentOrders } from "./components/recent-orders";
+import { Card, CardHeader } from "@nextui-org/react";
 
 const Page = () => {
   const data = [
@@ -37,9 +38,30 @@ const Page = () => {
         <Stats title="Total revenue" data={20} />
       </div>
       <div className="grid grid-cols-2 gap-10 mt-10">
-        <CategorySales data={data} />
-        <DailyRevenue data={data1} />
-        <MonthlySales data={data3} />
+        <div className="h-full min-h-[50vh]">
+          <Card className="h-full px-5">
+            <CardHeader className="text-lg m-2 font-semibold">
+              Daily Revenue
+            </CardHeader>
+            <DailyRevenue data={data1} />
+          </Card>
+        </div>
+        <div className="h-full">
+          <Card className="h-full px-5">
+            <CardHeader className="text-lg m-2 font-semibold">
+              Monthly Sales
+            </CardHeader>
+            <MonthlySales data={data3} />
+          </Card>
+        </div>
+        <div className="h-full">
+          <Card className="h-full px-5">
+            <CardHeader className="text-lg m-2 font-semibold">
+              Sale by Category
+            </CardHeader>
+            <CategorySales data={data} />
+          </Card>
+        </div>
         <RecentOrders />
       </div>
     </div>
