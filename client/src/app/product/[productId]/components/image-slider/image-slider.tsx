@@ -1,34 +1,28 @@
 import Image from "next/image";
 import React, { useState } from "react";
 
-const ImageSlider = () => {
-  const images = [
-    "/products/product1.png",
-    "/products/product1.png",
-    "/products/product1.png",
-    "/products/product1.png",
-    "/products/product1.png",
-    "/products/product1.png",
-    "/products/product1.png",
-    "/products/product1.png",
-  ];
-  const [selected, setSelected] = useState(0);
+const ImageSlider = ({ images }) => {
+  const [selected, setSelected] = useState(images[0]);
   return (
     <div className="flex gap-5">
       <ul className="flex flex-col gap-2">
         {images.map((image, index) => (
           <li
-            className={`p-3 bg-gray-200 rounded-sm w-max cursor-pointer`}
+            className={`p-2 bg-gray-200 rounded-sm w-max cursor-pointer`}
             key={image}
-            onClick={() => setSelected(index)}
+            onClick={() => setSelected(image)}
           >
-            <Image src={image} alt="product" height={25} width={25} />
+            <div className="relative h-10 w-16">
+              <Image src={image} alt="product" fill />
+            </div>
           </li>
         ))}
       </ul>
 
       <div className="flex items-center justify-center w-full">
-        <Image src={images[selected]} alt="product" height={300} width={300} />
+        <div className="h-[500px] w-full relative">
+          <Image src={selected} alt="product" fill />
+        </div>
       </div>
     </div>
   );

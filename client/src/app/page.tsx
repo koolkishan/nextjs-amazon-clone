@@ -1,66 +1,26 @@
+"use client";
 import { AppleCards } from "@/components/client/apple-cards";
 import { HomeCards } from "@/components/client/home-cards";
 import { HomeCarousels } from "@/components/client/home-carousels";
 import { PrimeVideo } from "@/components/client/prime-video";
 import { ProductGrid } from "@/components/client/product-grid";
-import Image from "next/image";
+import { getAllProducts } from "@/lib/api/products";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  const products = [
-    {
-      id: "1",
-      name: "Apple Iphon 15 Pro - Red",
-      price: "300",
-      ratings: {
-        count: 3000,
-        average: "4",
-      },
-      image: "/products/product1.png",
-    },
-    {
-      id: "1",
-      name: "Apple Iphon 15 Pro - Red",
-      price: "300",
-      ratings: {
-        count: 3000,
-        average: "4",
-      },
-      image: "/products/product1.png",
-    },
-    ,
-    {
-      id: "1",
-      name: "Apple Iphon 15 Pro - Red",
-      price: "300",
-      ratings: {
-        count: 3000,
-        average: "4",
-      },
-      image: "/products/product1.png",
-    },
-    ,
-    {
-      id: "1",
-      name: "Apple Iphon 15 Pro - Red",
-      price: "300",
-      ratings: {
-        count: 3000,
-        average: "4",
-      },
-      image: "/products/product1.png",
-    },
-    ,
-    {
-      id: "1",
-      name: "Apple Iphon 15 Pro - Red",
-      price: "300",
-      ratings: {
-        count: 3000,
-        average: "4",
-      },
-      image: "/products/product1.png",
-    },
-  ];
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const response = await getAllProducts();
+      if (response) {
+        console.log({ response });
+        setProducts(response);
+      }
+    };
+    fetchProducts();
+  }, []);
+
   return (
     <div className="flex gap-10 flex-col mb-10">
       <HomeCarousels />

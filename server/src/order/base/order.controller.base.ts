@@ -11,6 +11,7 @@ https://docs.amplication.com/how-to/custom-code
   */
 import * as common from "@nestjs/common";
 import * as swagger from "@nestjs/swagger";
+import Stripe from "stripe";
 import { isRecordNotFoundError } from "../../prisma.util";
 import * as errors from "../../errors";
 import { Request } from "express";
@@ -50,10 +51,30 @@ export class OrderControllerBase {
     type: errors.ForbiddenException,
   })
   async create(@common.Body() data: OrderCreateInput): Promise<Order> {
+    console.log({ data });
+    let paymentIntent = "";
+
+    if (data.status.paymentMode === "stripe") {
+      // @ts-ignore
+      const stripe = new Stripe(
+        "sk_test_51DpVXWGc9EcLzRLBNKni929hB026lACv6toMfjH1FPtIXfYgIrhXzjolcYzDDl2VwtvmyPF20PJ1JaMUCTNoEwDN00FN8hrRZL"
+        // { apiVersion: "2022-11-15" }
+      );
+      console.log("in stripe");
+      const paymentData = await stripe.paymentIntents.create({
+        amount: data.price * 100,
+        currency: "usd",
+        automatic_payment_methods: {
+          enabled: true,
+        },
+      });
+      paymentIntent = paymentData.id;
+    }
+
     return await this.service.create({
       data: {
         ...data,
-
+        paymentIntent,
         user: data.user
           ? {
               connect: data.user,

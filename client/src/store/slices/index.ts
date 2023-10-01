@@ -1,4 +1,5 @@
 import { AuthSlice, createAuthSlice } from "./auth-slice";
-
-export { createAuthSlice };
-export type { AuthSlice };
+import { CartSlice, createCartSlice } from "./cart-slice";
+import { OrdersSlice, createOrdersSlice } from "./orders-slice";
+export { createAuthSlice, createCartSlice, createOrdersSlice };
+export type { AuthSlice, CartSlice, OrdersSlice };

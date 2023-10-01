@@ -71,8 +71,9 @@ class OrderCreateInput {
   })
   @IsJSONValue()
   @Field(() => GraphQLJSON)
-  status!: InputJsonValue;
-
+  status!: {
+    paymentMode: string;
+  };
   @ApiProperty({
     required: false,
     type: () => UserWhereUniqueInput,

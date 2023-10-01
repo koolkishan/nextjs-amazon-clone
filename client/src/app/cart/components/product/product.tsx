@@ -1,3 +1,4 @@
+import { useAppStore } from "@/store/store";
 import Image from "next/image";
 import React from "react";
 import { FaTrash } from "react-icons/fa";
@@ -10,9 +11,15 @@ const Product = ({
     color: string;
     quantity: string;
     price: string;
-    image: string;
+    images: string[];
   };
 }) => {
+  const {
+    increaseQuantity,
+    decreaseQuantity,
+    removeFromCart,
+    getQuantityById,
+  } = useAppStore();
   return (
     <div className="flex gap-10 bg-gray-100 p-10 rounded-sm items-center ">
       <div>
@@ -24,7 +31,7 @@ const Product = ({
         />
       </div>
       <div className="relative h-24 w-24">
-        <Image src={productData.image} fill alt="product" />
+        <Image src={productData.images[0]} fill alt="product" />
       </div>
       <div className="flex-1">
         <h3 className="font-bold text-lg">{productData.title}</h3>
@@ -34,20 +41,35 @@ const Product = ({
             <span className="font-bold">Titanium White</span>
           </div>
           <div>
-            <span>Storage:</span>
-            <span className="font-bold">256GB</span>
+            <span>Variant:</span>
+            <span className="font-bold">{productData.variants[0]}</span>
           </div>
         </div>
       </div>
       <div className="flex gap-5 font-bold ">
-        <span>+</span>
-        <span>{productData.quantity}</span>
-        <span>−</span>
+        <span
+          className="cursor-pointer"
+          onClick={() => increaseQuantity(productData.id)}
+        >
+          +
+        </span>
+        <span>{getQuantityById(productData.id)}</span>
+        <span
+          className="cursor-pointer"
+          onClick={() => decreaseQuantity(productData.id)}
+        >
+          −
+        </span>
       </div>
-      <div>
-        <strong>{productData.price}</strong>
+      <div className="w-16 text-center">
+        <strong>
+          ${productData.discountPrice * getQuantityById(productData.id)}
+        </strong>
       </div>
-      <div className="cursor-pointer">
+      <div
+        className="cursor-pointer"
+        onClick={() => removeFromCart(productData.id)}
+      >
         <FaTrash />
       </div>
     </div>

@@ -8,7 +8,7 @@
     "start:frontend": "cross-env PORT=5000 npm --prefix client run dev",
     "start:admin": "npm --prefix admin-ui start",
     "start:backend": "npm --prefix server start",
-    "postinstall": "npm i --prefix client && npm i --prefix admin-ui && npm i --prefix server"
+    "postinstall": "npm i --prefix client && npm i --prefix server"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

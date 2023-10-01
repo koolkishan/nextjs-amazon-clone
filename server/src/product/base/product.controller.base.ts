@@ -71,9 +71,10 @@ export class ProductControllerBase {
         category: {
           select: {
             id: true,
+            name: true,
           },
         },
-
+        _count: true,
         colors: true,
         createdAt: true,
         description: true,
@@ -95,7 +96,7 @@ export class ProductControllerBase {
     });
   }
 
-  @common.UseInterceptors(AclFilterResponseInterceptor)
+  // @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get()
   @swagger.ApiOkResponse({ type: [Product] })
   @ApiNestedQuery(ProductFindManyArgs)
@@ -139,7 +140,7 @@ export class ProductControllerBase {
     });
   }
 
-  @common.UseInterceptors(AclFilterResponseInterceptor)
+  // @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get("/:id")
   @swagger.ApiOkResponse({ type: Product })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })

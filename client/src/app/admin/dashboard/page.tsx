@@ -14,28 +14,32 @@ const Page = () => {
     { category: "Books", sales: 180 },
     // Add more category and sales data here
   ];
-  const data1 = [
-    { date: "2023-09-01", revenue: 1000 },
-    { date: "2023-09-02", revenue: 1200 },
-    { date: "2023-09-03", revenue: 800 },
-    // Add more daily revenue data here
-  ];
+  const data1 = [];
 
+  for (let i = 1; i <= 30; i++) {
+    const date = new Date(2023, 8, i); // Note: Months are 0-indexed, so 8 represents September
+    const revenue = Math.floor(Math.random() * 1000) + 800; // Random revenue between 500 and 1499
+    data1.push({ date: date.toISOString().split("T")[0], revenue });
+  }
   const data3 = [
     { month: "January", sales: 1000 },
     { month: "February", sales: 1200 },
     { month: "March", sales: 800 },
+    { month: "April", sales: 2000 },
+    { month: "May", sales: 1000 },
+    { month: "June", sales: 1500 },
+    { month: "July", sales: 200 },
     // Add more monthly sales data here
   ];
 
   return (
     <div className="m-10">
       <div className="flex justify-between gap-5">
-        <Stats title="Total category" data={20} />
-        <Stats title="Total products" data={20} />
+        <Stats title="Total category" data={5} />
+        <Stats title="Total products" data={201} />
         <Stats title="Total users" data={20} />
-        <Stats title="Total orders" data={20} />
-        <Stats title="Total revenue" data={20} />
+        <Stats title="Total orders" data={405} />
+        <Stats title="Total revenue" data={50000} />
       </div>
       <div className="grid grid-cols-2 gap-10 mt-10">
         <div className="h-full min-h-[50vh]">

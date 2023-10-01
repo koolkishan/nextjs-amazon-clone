@@ -26,3 +26,4 @@ export const setStoredJwt = (accessToken) =>
 export const get = axios.get;
 export const patch = axios.patch;
 export const post = axios.post;
+export const axiosDelete = axios.delete;

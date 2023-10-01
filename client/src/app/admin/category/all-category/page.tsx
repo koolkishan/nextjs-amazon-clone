@@ -32,7 +32,6 @@ export default function Page() {
     const getData = async () => {
       const results = await getAllCategories();
       if (results) {
-        console.log({ results });
         setCategories(results);
       }
     };

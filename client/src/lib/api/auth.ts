@@ -6,7 +6,7 @@ export const me = async () => {
 
 export const login = async (username: string, password: string) => {
   try {
-    const result = await apiClient.post("/api/login", { username, password });
+    const result = await post(createUrl("/api/login"), { username, password });
     setStoredJwt(result?.data?.accessToken);
     return me();
   } catch (err) {
