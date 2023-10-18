@@ -5,6 +5,13 @@ import { FiSearch } from "react-icons/fi";
 import { BiChevronDown } from "react-icons/bi";
 import { useRouter } from "next/navigation";
 import { useAppStore } from "@/store/store";
+import {
+  Listbox,
+  ListboxItem,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@nextui-org/react";
 const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const handleSearch = () => {
@@ -49,17 +56,48 @@ const Navbar = () => {
           <FiSearch />
         </button>
       </div>
-      <div className="flex items-end gap-1 cursor-pointer">
-        <div className="flex flex-col gap-0  justify-around">
-          <span className="text-sm h-4 capitalize">
-            Hello, {userInfo.username.split("@")[0]}
+      {!userInfo ? (
+        <div className="flex flex-col gap-0  justify-around cursor-pointer">
+          <span className="font-semibold" onClick={() => router.push("/login")}>
+            Login
           </span>
-          <span className="font-semibold">Account & Orders</span>
         </div>
-        <div className="text-xl">
-          <BiChevronDown />
-        </div>
-      </div>
+      ) : (
+        <Popover placement="bottom" showArrow={true}>
+          <PopoverTrigger>
+            <div className="flex items-end gap-1 cursor-pointer">
+              <div className="flex flex-col gap-0  justify-around">
+                <span className="text-sm h-4 capitalize">
+                  Hello, {userInfo?.username.split("@")[0]}
+                </span>
+                <span className="font-semibold">Account & Orders</span>
+              </div>
+              <div className="text-xl">
+                <BiChevronDown />
+              </div>
+            </div>
+          </PopoverTrigger>
+          <PopoverContent>
+            <div className="px-1 py-2">
+              <div className="w-full max-w-[260px]">
+                <Listbox
+                  aria-label="Actions"
+                  onAction={(key) => router.push(key as string)}
+                >
+                  <ListboxItem key="/my-orders">My Orders</ListboxItem>
+                  <ListboxItem
+                    key="/logout"
+                    className="text-danger"
+                    color="danger"
+                  >
+                    Logout
+                  </ListboxItem>
+                </Listbox>
+              </div>
+            </div>
+          </PopoverContent>
+        </Popover>
+      )}
       <div className="cursor-pointer" onClick={() => router.push("/cart")}>
         <div className="flex items-end relative">
           <Image src="/cart.png" alt="cart" height={40} width={40} />
