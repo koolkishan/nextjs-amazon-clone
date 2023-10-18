@@ -1,7 +1,11 @@
 import { createUrl, isStoredJwt, post, setStoredJwt, get } from "./api-client";
 
 export const me = async () => {
-  return isStoredJwt() ? (await get(createUrl("/api/me")))?.data : null;
+  try {
+    return isStoredJwt() ? (await get(createUrl("/api/me")))?.data : null;
+  } catch (err) {
+    return err;
+  }
 };
 
 export const login = async (username: string, password: string) => {
@@ -10,7 +14,7 @@ export const login = async (username: string, password: string) => {
     setStoredJwt(result?.data?.accessToken);
     return me();
   } catch (err) {
-    console.log(err);
+    return err;
   }
 };
 

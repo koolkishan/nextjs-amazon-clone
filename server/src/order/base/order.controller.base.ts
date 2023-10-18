@@ -50,9 +50,11 @@ export class OrderControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
-  async create(@common.Body() data: OrderCreateInput): Promise<Order> {
-    console.log({ data });
+  async create(
+    @common.Body() data: OrderCreateInput
+  ): Promise<{ client_secret: string }> {
     let paymentIntent = "";
+    let client_secret = "";
 
     if (data.status.paymentMode === "stripe") {
       // @ts-ignore
@@ -60,7 +62,6 @@ export class OrderControllerBase {
         "sk_test_51DpVXWGc9EcLzRLBNKni929hB026lACv6toMfjH1FPtIXfYgIrhXzjolcYzDDl2VwtvmyPF20PJ1JaMUCTNoEwDN00FN8hrRZL"
         // { apiVersion: "2022-11-15" }
       );
-      console.log("in stripe");
       const paymentData = await stripe.paymentIntents.create({
         amount: data.price * 100,
         currency: "usd",
@@ -69,9 +70,10 @@ export class OrderControllerBase {
         },
       });
       paymentIntent = paymentData.id;
+      client_secret = paymentData.client_secret as string;
     }
 
-    return await this.service.create({
+    await this.service.create({
       data: {
         ...data,
         paymentIntent,
@@ -97,6 +99,7 @@ export class OrderControllerBase {
         },
       },
     });
+    return { client_secret };
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)

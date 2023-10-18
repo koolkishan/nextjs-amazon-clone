@@ -19,7 +19,6 @@ const Page = () => {
         cartProducts.map((product) => product.id)
       );
       setProducts(response);
-      console.log({ response });
     };
     getData();
   }, [cartProducts]);
@@ -199,14 +198,23 @@ const Page = () => {
                 </h4>
               </div>
             </div>
-            <button
-              className="bg-amazon-secondary hover:bg-amazon-primary transition-all duration-300 text-white rounded flex justify-between px-3 py-2 gap-10 font-bold w-full"
-              onClick={() => handleCheckoutRedirect()}
-            >
-              <span>Checkout</span>
+            {userInfo ? (
+              <button
+                className="bg-amazon-secondary hover:bg-amazon-primary transition-all duration-300 text-white rounded flex justify-between px-3 py-2 gap-10 font-bold w-full"
+                onClick={() => handleCheckoutRedirect()}
+              >
+                <span>Checkout</span>
 
-              <span> ${getTotalAmount() + (primeShipping ? 40 : 0)}</span>
-            </button>
+                <span> ${getTotalAmount() + (primeShipping ? 40 : 0)}</span>
+              </button>
+            ) : (
+              <button
+                className="bg-amazon-secondary hover:bg-amazon-primary transition-all duration-300 text-white rounded flex justify-center px-3 py-2 gap-10 font-bold w-full items-center"
+                onClick={() => router.push("/login")}
+              >
+                Login
+              </button>
+            )}
           </div>
         </div>
       ) : (
