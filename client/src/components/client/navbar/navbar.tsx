@@ -10,7 +10,7 @@ const Navbar = () => {
   const handleSearch = () => {
     router.push(`/search?query=${searchTerm}`);
   };
-  const { cartProducts } = useAppStore();
+  const { cartProducts, userInfo } = useAppStore();
   const router = useRouter();
   return (
     <nav className="bg-amazon-dark min-h-[12vh] flex items-center px-10 h-full text-white gap-10">
@@ -51,7 +51,9 @@ const Navbar = () => {
       </div>
       <div className="flex items-end gap-1 cursor-pointer">
         <div className="flex flex-col gap-0  justify-around">
-          <span className="text-sm h-4">Hello, Kishan</span>
+          <span className="text-sm h-4 capitalize">
+            Hello, {userInfo.username.split("@")[0]}
+          </span>
           <span className="font-semibold">Account & Orders</span>
         </div>
         <div className="text-xl">

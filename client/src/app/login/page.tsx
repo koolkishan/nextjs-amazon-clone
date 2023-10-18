@@ -1,7 +1,7 @@
 "use client";
 import { login } from "@/lib/api/auth";
 import { useAppStore } from "@/store/store";
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -16,6 +16,9 @@ const Page = () => {
   const handleSignIn = async () => {
     if (email && password) {
       const response: AxiosResponse = await login(email, password);
+      if (response instanceof AxiosError) {
+        setToast(response?.response?.data.message);
+      }
       if (response?.username) {
         setUserInfo(response);
         router.push("/");
