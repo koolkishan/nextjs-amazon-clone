@@ -1,6 +1,6 @@
 "use client";
-import { usePathname } from "next/navigation";
-import React, { useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { ToastContainer, ToastOptions, toast } from "react-toastify";
 import AdminLayout from "./admin-layout";
 import ClientStoreLayout from "./client-store-layout";
@@ -12,6 +12,8 @@ import { AxiosError } from "axios";
 const Layouts = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const { userInfo, setUserInfo, toasts, clearToast, setToast } = useAppStore();
+  const [isLoaded, setisLoaded] = useState(false);
+  const router = useRouter();
   useEffect(() => {
     if (toasts.length) {
       const toastOptions: ToastOptions = {
@@ -42,19 +44,67 @@ const Layouts = ({ children }: { children: React.ReactNode }) => {
         if (response?.id) {
           setUserInfo(response);
         }
+        setisLoaded(true);
       } catch (err) {}
     };
     if (!userInfo) {
       getUserInfo();
     }
-  }, [userInfo]);
+  }, [userInfo, setToast, setUserInfo]);
+
+  // useEffect(() => {
+  //   console.log("in effect", { pathname, userInfo, isLoaded });
+  //   if (
+  //     !pathname.includes("/admin/login") &&
+  //     !pathname.includes("/login") &&
+  //     !pathname.includes("/signup") &&
+  //     !pathname.includes("/logout") &&
+  //     !pathname.includes("/admin/logout")
+  //   ) {
+  //     if (isLoaded) {
+  //       if (userInfo) {
+  //         if (!userInfo?.isAdmin && pathname.includes("/admin")) {
+  //           setToast(
+  //             "You need to logged in with Admin Account to access Admin Area."
+  //           );
+  //         }
+  //       } else {
+  //         if (pathname.includes("/admin")) {
+  //           setToast(
+  //             "You need to logged in with Admin Account to access Admin Area."
+  //           );
+  //           router.push("/");
+  //         }
+  //       }
+  //     }
+  //   } else {
+  //     if (isLoaded) {
+  //       if (userInfo) {
+  //         if (userInfo?.isAdmin) {
+  //           console.log("toast in if");
+  //           setToast("Already Logged in.");
+  //           router.push("/admin");
+  //         } else {
+  //           console.log("toast in else");
+  //           setToast("Already Logged in.");
+  //           router.push("/");
+  //         }
+  //       }
+  //     }
+  //   }
+  // }, [pathname, userInfo, isLoaded, setToast, router]);
+
   return (
     <>
-      {pathname.includes("/admin") ? (
-        <AdminLayout>{children} </AdminLayout>
-      ) : (
-        <ClientStoreLayout>{children}</ClientStoreLayout>
-      )}
+      {isLoaded ? (
+        <>
+          {pathname.includes("/admin") ? (
+            <AdminLayout>{children} </AdminLayout>
+          ) : (
+            <ClientStoreLayout>{children}</ClientStoreLayout>
+          )}
+        </>
+      ) : null}
       <ToastContainer />
     </>
   );

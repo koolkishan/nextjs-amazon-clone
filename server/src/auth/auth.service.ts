@@ -61,6 +61,7 @@ export class AuthService {
         password,
         firstName,
         lastName,
+        isAdmin: false,
         roles: ["user"],
       },
     });
@@ -96,6 +97,7 @@ export class AuthService {
         roles: true,
         updatedAt: true,
         username: true,
+        isAdmin: true,
       },
     });
     if (!result) {

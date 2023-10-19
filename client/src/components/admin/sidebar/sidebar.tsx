@@ -6,6 +6,7 @@ import { FaHome, FaShoppingCart } from "react-icons/fa";
 import { BsFillBarChartFill, BsPhoneFill } from "react-icons/bs";
 import { MdAddBox } from "react-icons/md";
 import { HiCollection } from "react-icons/hi";
+import { LuLogOut } from "react-icons/lu";
 import {
   Sidebar,
   Menu,
@@ -109,6 +110,8 @@ const Side = () => {
               alt="logo"
               height={150}
               width={150}
+              className="cursor-pointer"
+              onClick={() => router.push("/admin/dashboard")}
             />
           </div>
 
@@ -138,6 +141,13 @@ const Side = () => {
               )}
             </React.Fragment>
           ))}
+          <MenuItem
+            onClick={() => handleItemClick("/admin/logout")}
+            icon={<LuLogOut />}
+            active={selectedItem === "/admin/logout"}
+          >
+            Logout
+          </MenuItem>
         </Menu>
       </Sidebar>
     </div>
