@@ -94,6 +94,23 @@ const Layouts = ({ children }: { children: React.ReactNode }) => {
   //   }
   // }, [pathname, userInfo, isLoaded, setToast, router]);
 
+  useEffect(() => {
+    if (
+      isLoaded &&
+      pathname.includes("/admin") &&
+      pathname !== "/admin/login" &&
+      pathname !== "/admin/logout"
+    ) {
+      if (!userInfo) {
+        setToast("Please Login.");
+        router.push("/admin/login");
+      } else if (!userInfo.isAdmin) {
+        setToast("Login with Admin user.");
+        router.push("/");
+      }
+    }
+  }, [pathname, isLoaded, userInfo, setToast, router]);
+
   return (
     <>
       {isLoaded ? (
