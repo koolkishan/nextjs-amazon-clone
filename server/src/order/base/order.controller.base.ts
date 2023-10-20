@@ -127,7 +127,7 @@ export class OrderControllerBase {
         price: true,
         status: true,
         updatedAt: true,
-
+        _count: true,
         user: {
           select: {
             id: true,

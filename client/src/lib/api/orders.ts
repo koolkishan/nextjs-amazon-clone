@@ -41,3 +41,17 @@ export const recordStripePayment = async (paymnent_intent: string) => {
     return error;
   }
 };
+
+export const getUserOrders = async (userId: string) => {
+  try {
+    const query = qs.stringify({
+      where: {
+        user: { id: userId },
+      },
+    });
+    const response = await get(createUrl(`/api/orders?${query}`));
+    return response.data;
+  } catch (error) {
+    console.log({ error });
+  }
+};
