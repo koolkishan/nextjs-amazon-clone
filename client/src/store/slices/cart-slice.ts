@@ -8,6 +8,7 @@ export interface CartSlice {
   decreaseQuantity: (id: string) => void;
   getQuantityById: (id: string) => number | undefined; // New method
   getTotalAmount: () => number; // New method
+  emptyCart: () => void;
 }
 
 export const createCartSlice: StateCreator<CartSlice> = (set, get) => ({
@@ -92,4 +93,5 @@ export const createCartSlice: StateCreator<CartSlice> = (set, get) => ({
 
     return totalAmount;
   },
+  emptyCart: () => set({ cartProducts: [] }),
 });

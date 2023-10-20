@@ -76,6 +76,7 @@ export class OrderControllerBase {
     await this.service.create({
       data: {
         ...data,
+        paymentStatus: false,
         paymentIntent,
         user: data.user
           ? {

@@ -36,7 +36,7 @@ const Page = () => {
         id: userInfo.id,
       },
       status: {
-        paymentMode: isCod ? "cash-on-deliver" : "stripe",
+        paymentMode: isCod ? "cash-on-delivery" : "stripe",
       },
       paymentIntent: "",
       price: getTotalAmount() + (primeShipping ? 40 : 0),

@@ -6,27 +6,39 @@ import { loadStripe } from "@stripe/stripe-js";
 import { useAppStore } from "@/store/store";
 import { createOrder } from "@/lib/api/orders";
 import StripeForm from "./components/stripe-form";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const stripePromise = loadStripe("pk_test_xeqIPdYS2PpKbHmKG4gJqpde");
 
 const Page = () => {
   const [clientSecret, setClientSecret] = useState("");
-  const { ordersInfo } = useAppStore();
-
+  const { ordersInfo, setToast, emptyCart } = useAppStore();
+  const router = useRouter();
+  const [isCod, setisCod] = useState(false);
+  const [orderCreated, setOrderCreated] = useState(false);
   useEffect(() => {
     const handleCreateOrder = async () => {
       const response = await createOrder(ordersInfo);
 
-      if (response?.client_secret) {
+      if (
+        ordersInfo.status.paymentMode === "stripe" &&
+        response?.client_secret
+      ) {
         setClientSecret(response?.client_secret);
       }
+      setOrderCreated(true);
       console.log({ response });
     };
     if (ordersInfo) {
       handleCreateOrder();
-      console.log({ clientSecret });
+      if (ordersInfo.status.paymentMode === "cash-on-delivery") {
+        setisCod(true);
+        emptyCart();
+      }
     } else {
-      console.log("no orders");
+      setToast("Please add product in cart.");
+      router.push("/");
     }
   }, [ordersInfo]);
 
@@ -39,10 +51,22 @@ const Page = () => {
   };
   return (
     <div>
-      {clientSecret.length > 0 && (
-        <Elements options={options} stripe={stripePromise}>
-          <StripeForm clientSecret={clientSecret} />
-        </Elements>
+      {orderCreated && (
+        <>
+          {!isCod && clientSecret.length > 0 && (
+            <Elements options={options} stripe={stripePromise}>
+              <StripeForm clientSecret={clientSecret} />
+            </Elements>
+          )}
+          {isCod && (
+            <h2 className="flex items-center justify-center h-[80vh] w-full text-3xl gap-2">
+              <span>Order Created Successfully.</span>
+              <Link href="/orders" className="underline">
+                View orders.
+              </Link>
+            </h2>
+          )}
+        </>
       )}
     </div>
   );
