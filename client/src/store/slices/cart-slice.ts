@@ -80,13 +80,15 @@ export const createCartSlice: StateCreator<CartSlice> = (set, get) => ({
   },
   getTotalAmount: () => {
     const { cartProducts } = get();
-
+    console.log({ cartProducts });
     // Calculate the total amount by summing the quantity * price of each product (replace 'price' with the actual price property)
     const totalAmount = cartProducts.reduce((total, product) => {
       // You need to replace 'price' with the actual price property of your products
       const productPrice = parseInt(product.price); // Replace with the actual price of the product
       return total + product.quantity * productPrice;
     }, 0);
+
+    console.log({ totalAmount });
 
     return totalAmount;
   },

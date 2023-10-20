@@ -12,7 +12,11 @@ import { useRouter } from "next/navigation";
 import { editCategory, getCategory } from "@/lib/api/category";
 import { useAppStore } from "@/store/store";
 
-export default function Page({ params: { categoryID } }) {
+export default function Page({
+  params: { categoryID },
+}: {
+  params: { categoryID: string };
+}) {
   const router = useRouter();
   const [category, setCategory] = useState("");
   const { setToast } = useAppStore();

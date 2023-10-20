@@ -76,6 +76,7 @@ const Page = () => {
                         className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                         name="shipping-method"
                         onClick={() => setPrimeShipping(false)}
+                        checked={!primeShipping}
                       />
                     </div>
                     <div className="ml-2 text-sm">
@@ -103,6 +104,7 @@ const Page = () => {
                         className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                         name="shipping-method"
                         onClick={() => setPrimeShipping(true)}
+                        checked={primeShipping}
                       />
                     </div>
                     <div className="ml-2 text-sm">
@@ -135,27 +137,6 @@ const Page = () => {
               <strong>Kishan, the last step remains!</strong>
             </h5>
             <div className="flex flex-col gap-2 my-5">
-              <div className="flex ">
-                <div className="flex items-center h-5">
-                  <input
-                    id="cod"
-                    aria-describedby="payment-method-text"
-                    type="radio"
-                    value=""
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    name="payment-method"
-                    onClick={() => setIsCod(true)}
-                  />
-                </div>
-                <div className="ml-2 text-sm">
-                  <label
-                    for="cod"
-                    className="font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Cash on Delivery
-                  </label>
-                </div>
-              </div>
               <div className="flex">
                 <div className="flex items-center h-5">
                   <input
@@ -166,6 +147,7 @@ const Page = () => {
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     name="payment-method"
                     onClick={() => setIsCod(false)}
+                    checked={!isCod}
                   />
                 </div>
                 <div className="ml-2 text-sm">
@@ -174,6 +156,28 @@ const Page = () => {
                     className="font-medium text-gray-900 dark:text-gray-300"
                   >
                     Stripe
+                  </label>
+                </div>
+              </div>
+              <div className="flex ">
+                <div className="flex items-center h-5">
+                  <input
+                    id="cod"
+                    aria-describedby="payment-method-text"
+                    type="radio"
+                    value=""
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    name="payment-method"
+                    onClick={() => setIsCod(true)}
+                    checked={isCod}
+                  />
+                </div>
+                <div className="ml-2 text-sm">
+                  <label
+                    for="cod"
+                    className="font-medium text-gray-900 dark:text-gray-300"
+                  >
+                    Cash on Delivery
                   </label>
                 </div>
               </div>

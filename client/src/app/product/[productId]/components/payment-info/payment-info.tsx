@@ -1,8 +1,10 @@
 import { useAppStore } from "@/store/store";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { FaLock } from "react-icons/fa";
 
 const PaymentInfo = ({ data }) => {
+  const router = useRouter();
   const { addToCart } = useAppStore();
   function getRandomDateInNext7Days() {
     const currentDate = new Date();
@@ -37,7 +39,13 @@ const PaymentInfo = ({ data }) => {
       >
         Add to Cart
       </button>
-      <button className="bg-amazon-blue hover:bg-[#019bcf] transition-all duration-300 text-white rounded flex  px-3 py-2 gap-10 font-bold w-full items-center justify-center my-3">
+      <button
+        className="bg-amazon-blue hover:bg-[#019bcf] transition-all duration-300 text-white rounded flex  px-3 py-2 gap-10 font-bold w-full items-center justify-center my-3"
+        onClick={() => {
+          addToCart(data.id, data.price);
+          router.push("/cart");
+        }}
+      >
         Buy Now
       </button>
       <div className="flex gap-3 items-center text-gray-600">

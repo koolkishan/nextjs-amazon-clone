@@ -8,6 +8,7 @@ import { useAppStore } from "@/store/store";
 const Product = ({ productDetails }) => {
   const router = useRouter();
   const { addToCart } = useAppStore();
+  console.log({ productDetails });
   const handleClick = () => {
     router.push(`/product/${productDetails.id}`);
   };
@@ -65,11 +66,19 @@ const Product = ({ productDetails }) => {
         <div className="flex gap-2 w-full">
           <button
             className="bg-amazon-secondary hover:bg-amazon-primary transition-all duration-300 text-white rounded flex  px-3 py-2 gap-10 font-bold w-52 items-center justify-center my-3"
-            onClick={() => addToCart(productDetails.id, productDetails.price)}
+            onClick={() =>
+              addToCart(productDetails.id, productDetails.discountPrice)
+            }
           >
             Add to Cart
           </button>
-          <button className="bg-amazon-blue hover:bg-[#019bcf] transition-all duration-300 text-white rounded flex  px-3 py-2 gap-10 font-bold w-52 items-center justify-center my-3">
+          <button
+            className="bg-amazon-blue hover:bg-[#019bcf] transition-all duration-300 text-white rounded flex  px-3 py-2 gap-10 font-bold w-52 items-center justify-center my-3"
+            onClick={() => {
+              addToCart(productDetails.id, productDetails.discountPrice);
+              router.push("/cart");
+            }}
+          >
             Buy Now
           </button>
         </div>
