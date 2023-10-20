@@ -136,7 +136,7 @@ export default function Page() {
                 variant="light"
                 className=""
                 color="primary"
-                onClick={() => router.push(`/orders/${order.id}`)}
+                onClick={() => router.push(`/my-orders/${order.id}`)}
               >
                 <FaEye />
               </Button>

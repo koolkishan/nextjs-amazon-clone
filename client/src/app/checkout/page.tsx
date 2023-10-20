@@ -61,7 +61,7 @@ const Page = () => {
           {isCod && (
             <h2 className="flex items-center justify-center h-[80vh] w-full text-3xl gap-2">
               <span>Order Created Successfully.</span>
-              <Link href="/orders" className="underline">
+              <Link href="/my-orders" className="underline">
                 View orders.
               </Link>
             </h2>

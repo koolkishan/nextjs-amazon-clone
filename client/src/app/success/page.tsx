@@ -17,7 +17,7 @@ const Page = () => {
     if (paymentIntent) {
       updateOrderInfo();
       emptyCart();
-      setTimeout(() => router.push("/orders"), 3000);
+      setTimeout(() => router.push("/my-orders"), 3000);
     }
   }, [emptyCart, router, paymentIntent]);
 
