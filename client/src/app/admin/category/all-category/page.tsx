@@ -196,7 +196,11 @@ export default function Page() {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            <Button color="primary" endContent={<FaPlus />}>
+            <Button
+              color="primary"
+              endContent={<FaPlus />}
+              onClick={() => router.push("/admin/category/add-category")}
+            >
               Add New Category
             </Button>
           </div>
