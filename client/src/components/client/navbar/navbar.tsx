@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { BiChevronDown } from "react-icons/bi";
 import { useRouter } from "next/navigation";
@@ -12,12 +12,32 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@nextui-org/react";
+import { getAllCategories } from "@/lib/api/category";
 const Navbar = () => {
+  const { cartProducts, userInfo } = useAppStore();
   const [searchTerm, setSearchTerm] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [categoriesPopover, setcategoriesPopover] = useState(false);
+  const [detailsPopover, setDetailsPopover] = useState(false);
+
+  useEffect(() => {
+    const getData = async () => {
+      const response = await getAllCategories();
+      const computedCategory = [];
+      response.forEach((category) => {
+        if (category._count.products > 0) {
+          computedCategory.push(category);
+        }
+      });
+      setCategories(computedCategory);
+      console.log({ response });
+    };
+    getData();
+  }, []);
+
   const handleSearch = () => {
     router.push(`/search?query=${searchTerm}`);
   };
-  const { cartProducts, userInfo } = useAppStore();
   const router = useRouter();
   return (
     <nav className="bg-amazon-dark min-h-[12vh] flex items-center px-10 h-full text-white gap-10">
@@ -32,15 +52,43 @@ const Navbar = () => {
           width={100}
         />
       </Link>
-      <div className="flex items-end gap-1 cursor-pointer">
-        <div className="flex flex-col gap-0  justify-around">
-          <span className="text-sm h-4">Select</span>
-          <span className="font-semibold">Category</span>
-        </div>
-        <div className="text-xl">
-          <BiChevronDown />
-        </div>
-      </div>
+      <Popover
+        placement="bottom"
+        showArrow={true}
+        isOpen={categoriesPopover}
+        onOpenChange={(open) => setcategoriesPopover(open)}
+        backdrop="blur"
+      >
+        <PopoverTrigger>
+          <div className="flex items-end gap-1 cursor-pointer">
+            <div className="flex flex-col gap-0  justify-around">
+              <span className="text-sm h-4 capitalize">Select</span>
+              <span className="font-semibold">Category</span>
+            </div>
+            <div className="text-xl">
+              <BiChevronDown />
+            </div>
+          </div>
+        </PopoverTrigger>
+        <PopoverContent>
+          <div className="px-1 py-2">
+            <div className="w-full max-w-[660px]">
+              <Listbox
+                aria-label="Actions"
+                onAction={(key) => {
+                  router.push(`/search?category=${key}`);
+                  setcategoriesPopover(false);
+                }}
+                className="grid grid-cols-3"
+              >
+                {categories.map((category) => (
+                  <ListboxItem key={category.id}>{category.name}</ListboxItem>
+                ))}
+              </Listbox>
+            </div>
+          </div>
+        </PopoverContent>
+      </Popover>
       <div className="flex-1 flex ">
         <input
           type="text"
@@ -63,7 +111,13 @@ const Navbar = () => {
           </span>
         </div>
       ) : (
-        <Popover placement="bottom" showArrow={true}>
+        <Popover
+          placement="bottom"
+          showArrow={true}
+          isOpen={detailsPopover}
+          onOpenChange={(open) => setDetailsPopover(open)}
+          backdrop="blur"
+        >
           <PopoverTrigger>
             <div className="flex items-end gap-1 cursor-pointer">
               <div className="flex flex-col gap-0  justify-around">
@@ -82,7 +136,10 @@ const Navbar = () => {
               <div className="w-full max-w-[260px]">
                 <Listbox
                   aria-label="Actions"
-                  onAction={(key) => router.push(key as string)}
+                  onAction={(key) => {
+                    router.push(key as string);
+                    setDetailsPopover(false);
+                  }}
                 >
                   <ListboxItem key="/my-orders">My Orders</ListboxItem>
                   <ListboxItem

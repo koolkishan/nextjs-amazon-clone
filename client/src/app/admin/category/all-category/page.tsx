@@ -21,14 +21,7 @@ import {
 } from "@nextui-org/react";
 
 import { columns } from "./data";
-import {
-  FaChevronDown,
-  FaEdit,
-  FaEye,
-  FaPlus,
-  FaSearch,
-  FaTrashAlt,
-} from "react-icons/fa";
+import { FaEdit, FaPlus, FaSearch, FaTrashAlt } from "react-icons/fa";
 
 import { deleteCategory, getAllCategories } from "@/lib/api/category";
 import { useRouter } from "next/navigation";
