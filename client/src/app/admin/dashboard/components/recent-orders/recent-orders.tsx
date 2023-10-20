@@ -8,36 +8,25 @@ import {
   TableRow,
   TableCell,
   User,
-  Chip,
-  Tooltip,
-  getKeyValue,
 } from "@nextui-org/react";
-// import { EditIcon } from "./EditIcon";
-// import { DeleteIcon } from "./DeleteIcon";
-// import { EyeIcon } from "./EyeIcon";
-import { columns, users } from "./data";
-import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
 
-const statusColorMap = {
-  active: "success",
-  paused: "danger",
-  vacation: "warning",
-};
+const columns = [
+  { name: "NAME", uid: "user" },
+  { name: "ORDER", uid: "id" },
+  {
+    name: "REVENUE",
+    uid: "price",
+  },
+];
 
-export default function RecentOrders() {
+export default function RecentOrders({ data }) {
   const renderCell = React.useCallback((user, columnKey) => {
     const cellValue = user[columnKey];
 
     switch (columnKey) {
-      case "name":
+      case "user":
         return (
-          <User
-            avatarProps={{ radius: "lg" }}
-            // description={user.email}
-            name={cellValue}
-          >
-            {/* {user.email} */}
-          </User>
+          <User avatarProps={{ radius: "lg" }} name={cellValue.username}></User>
         );
 
       default:
@@ -57,7 +46,7 @@ export default function RecentOrders() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody items={users}>
+      <TableBody items={data}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (

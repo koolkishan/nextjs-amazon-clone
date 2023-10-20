@@ -5,7 +5,6 @@ import {
   Area,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
@@ -15,7 +14,6 @@ const DailyRevenue = ({ data }) => {
   return (
     <ResponsiveContainer height="100%" width="100%">
       <AreaChart data={data}>
-        {/* <CartesianGrid strokeDasharray="3 3" /> */}
         <XAxis dataKey="date" />
         <YAxis />
         <Tooltip />

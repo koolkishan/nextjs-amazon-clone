@@ -3,6 +3,7 @@ import React from "react";
 import { PieChart, Pie, Legend, Tooltip, ResponsiveContainer } from "recharts";
 
 const CategorySales = ({ data }) => {
+  console.log({ data });
   return (
     <div style={{ width: "100%", height: "100%" }} className="">
       <ResponsiveContainer height="100%" width="100%">
@@ -10,7 +11,7 @@ const CategorySales = ({ data }) => {
           <Pie
             scale={4}
             data={data}
-            dataKey="sales"
+            dataKey="revenue"
             cx={300}
             cy={150}
             outerRadius={100}
@@ -18,7 +19,6 @@ const CategorySales = ({ data }) => {
             label
           />
           <Tooltip />
-          {/* <Legend /> */}
         </PieChart>
       </ResponsiveContainer>
     </div>
