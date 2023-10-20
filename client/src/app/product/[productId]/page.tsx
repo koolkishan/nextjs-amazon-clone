@@ -4,8 +4,7 @@ import { ImageSlider } from "./components/image-slider";
 import { TrustSlider } from "./components/trust-slider";
 import { Colors } from "./components/colors";
 import { Variants } from "./components/variants";
-import { ReviewBars } from "./components/review-bars";
-import { Reviews } from "./components/reviews";
+
 import { Ratings } from "@/app/search/components/product/ratings";
 import { FaCaretDown } from "react-icons/fa";
 import { PaymentInfo } from "./components/payment-info";
@@ -21,27 +20,7 @@ const Page = ({ params: { productId } }: { params: { productId: string } }) => {
     };
     getData();
   }, [productId]);
-  // const productDetails = {
-  //   id: "1",
-  //   name: "Apple Iphon 15 Pro - Red",
-  //   price: "300",
-  //   ratings: {
-  //     count: 3000,
-  //     average: "4",
-  //   },
-  //   image: "/products/product1.png",
-  //   colors: ["#3f0499", "#369904", "#eeb124", "#ca146f", "#1bc1e3"],
-  //   variants: ["128GB", "256GB", "512GB"],
-  //   stats: [
-  //     "15.40 cm (6.1-inch) Super Retina XDR display",
-  //     "Advanced camera system for better photos in any light",
-  //     "Cinematic mode now in 4K Dolby Vision up to 30 fps",
-  //     "Action mode for smooth, steady, handheld videos",
-  //     "Vital safety technology — Crash Detection calls for help when you can’t",
-  //     "All-day battery life and up to 20 hours of video playback",
-  //     "Industry-leading durability features with Ceramic Shield and water resistance",
-  //   ],
-  // };
+
   return (
     <div className="mt-5 mx-10">
       {productDetails && (

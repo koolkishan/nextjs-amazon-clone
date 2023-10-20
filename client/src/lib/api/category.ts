@@ -1,4 +1,4 @@
-import { createUrl, get, post } from "./api-client";
+import { axiosDelete, createUrl, get, patch, post } from "./api-client";
 
 export const addCategory = async (name: string) => {
   try {
@@ -18,5 +18,39 @@ export const getAllCategories = async () => {
     console.log({ response });
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const getCategory = async (id: string) => {
+  try {
+    const response = await get(createUrl(`/api/categories/${id}`));
+    if (response.data) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log({ error });
+    return error;
+  }
+};
+
+export const editCategory = async (id: string, category: string) => {
+  try {
+    const response = await patch(createUrl(`/api/categories/${id}`), {
+      name: category,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
+export const deleteCategory = async (id: string) => {
+  try {
+    const response = await axiosDelete(createUrl(`/api/categories/${id}`));
+    return response;
+  } catch (error) {
+    console.log(error);
+    return error;
   }
 };

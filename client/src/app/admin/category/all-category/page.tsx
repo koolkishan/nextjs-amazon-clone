@@ -12,6 +12,12 @@ import {
   Button,
   Pagination,
   Tooltip,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
 } from "@nextui-org/react";
 
 import { columns } from "./data";
@@ -24,10 +30,17 @@ import {
   FaTrashAlt,
 } from "react-icons/fa";
 
-import { getAllCategories } from "@/lib/api/category";
+import { deleteCategory, getAllCategories } from "@/lib/api/category";
+import { useRouter } from "next/navigation";
+import { useAppStore } from "@/store/store";
 
 export default function Page() {
   const [categories, setCategories] = useState([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [deleteId, setdeleteId] = useState(undefined);
+  const { setToast } = useAppStore();
+
+  const router = useRouter();
   useEffect(() => {
     const getData = async () => {
       const results = await getAllCategories();
@@ -38,9 +51,32 @@ export default function Page() {
     getData();
   }, []);
 
-  const handleDelete = async () => {};
+  const handleDelete = (category: string) => {
+    if (category._count.products > 0)
+      return setToast("Cannot delete category with products.");
+    setdeleteId(category.id);
+    onOpen();
+  };
 
-  const handleEdit = async () => {};
+  const confirmDelete = async () => {
+    const response = await deleteCategory(deleteId);
+    if (response.status === 200) {
+      const clonedCategories = [...categories];
+      const index = clonedCategories.findIndex(
+        (category) => category.id === deleteId
+      );
+      if (index !== -1) {
+        clonedCategories.splice(index, 1);
+      }
+      setCategories(clonedCategories);
+      setToast("Category deleted successfully.");
+    } else setToast("Unable to delete category.");
+    onClose();
+  };
+
+  const handleEdit = async (id: string) => {
+    router.push(`/admin/category/edit-category/${id}`);
+  };
 
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
@@ -100,12 +136,12 @@ export default function Page() {
           <div className="relative flex justify-start items-center gap-5">
             <Tooltip content="Edit Category" color="default">
               <span className="text-lg text-blue-400 cursor-pointer active:opacity-50">
-                <FaEdit />
+                <FaEdit onClick={() => handleEdit(user.id)} />
               </span>
             </Tooltip>
             <Tooltip color="danger" content="Delete Category">
               <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                <FaTrashAlt />
+                <FaTrashAlt onClick={() => handleDelete(user)} />
               </span>
             </Tooltip>
           </div>
@@ -270,6 +306,28 @@ export default function Page() {
           )}
         </TableBody>
       </Table>
+      <Modal backdrop="blur" isOpen={isOpen} onClose={onClose}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Are you sure you want to delete the category?
+              </ModalHeader>
+              <ModalBody>
+                <p>This action is irreversible.</p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="default" onPress={onClose}>
+                  Close
+                </Button>
+                <Button color="danger" onPress={confirmDelete}>
+                  Delete
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   );
 }

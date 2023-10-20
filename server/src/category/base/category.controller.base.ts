@@ -90,7 +90,7 @@ export class CategoryControllerBase {
     });
   }
 
-  @common.UseInterceptors(AclFilterResponseInterceptor)
+  // @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get("/:id")
   @swagger.ApiOkResponse({ type: Category })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })

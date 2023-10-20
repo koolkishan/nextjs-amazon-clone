@@ -11,9 +11,7 @@ export const createToastsSlice: StateCreator<ToastsSlice> = (set, get) => ({
   setToast: (message) => {
     const toasts = get().toasts;
 
-    if (!toasts.includes(message)) {
-      set({ toasts: [...toasts, message] });
-    }
+    set({ toasts: [...toasts, message] });
   },
   clearToast: () => set({ toasts: [] }),
 });
