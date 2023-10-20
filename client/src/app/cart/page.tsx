@@ -198,7 +198,9 @@ const Page = () => {
               <div className="flex gap-3 justify-between">
                 <h4>Total:</h4>
                 <h4 className="">
-                  <strong>${getTotalAmount()}</strong>
+                  <strong>
+                    ${getTotalAmount() + (primeShipping ? 40 : 0)}
+                  </strong>
                 </h4>
               </div>
             </div>
