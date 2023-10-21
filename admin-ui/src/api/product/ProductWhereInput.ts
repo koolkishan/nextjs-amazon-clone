@@ -2,7 +2,7 @@ import { CategoryWhereUniqueInput } from "../category/CategoryWhereUniqueInput";
 import { JsonFilter } from "../../util/JsonFilter";
 import { FloatFilter } from "../../util/FloatFilter";
 import { StringFilter } from "../../util/StringFilter";
-import { OrderWhereUniqueInput } from "../order/OrderWhereUniqueInput";
+import { OrderListRelationFilter } from "../order/OrderListRelationFilter";
 import { ReviewListRelationFilter } from "../review/ReviewListRelationFilter";
 
 export type ProductWhereInput = {
@@ -12,7 +12,7 @@ export type ProductWhereInput = {
   discountPrice?: FloatFilter;
   id?: StringFilter;
   images?: JsonFilter;
-  order?: OrderWhereUniqueInput;
+  order?: OrderListRelationFilter;
   reviews?: ReviewListRelationFilter;
   salePrice?: FloatFilter;
   title?: StringFilter;

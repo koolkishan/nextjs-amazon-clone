@@ -1,6 +1,6 @@
 import { CategoryWhereUniqueInput } from "../category/CategoryWhereUniqueInput";
 import { InputJsonValue } from "../../types";
-import { OrderWhereUniqueInput } from "../order/OrderWhereUniqueInput";
+import { OrderUpdateManyWithoutProductsInput } from "./OrderUpdateManyWithoutProductsInput";
 import { ReviewUpdateManyWithoutProductsInput } from "./ReviewUpdateManyWithoutProductsInput";
 
 export type ProductUpdateInput = {
@@ -9,7 +9,7 @@ export type ProductUpdateInput = {
   description?: InputJsonValue;
   discountPrice?: number;
   images?: InputJsonValue;
-  order?: OrderWhereUniqueInput | null;
+  order?: OrderUpdateManyWithoutProductsInput;
   reviews?: ReviewUpdateManyWithoutProductsInput;
   salePrice?: number;
   title?: string;

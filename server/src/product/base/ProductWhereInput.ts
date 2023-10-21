@@ -17,7 +17,7 @@ import { Type } from "class-transformer";
 import { JsonFilter } from "../../util/JsonFilter";
 import { FloatFilter } from "../../util/FloatFilter";
 import { StringFilter } from "../../util/StringFilter";
-import { OrderWhereUniqueInput } from "../../order/base/OrderWhereUniqueInput";
+import { OrderListRelationFilter } from "../../order/base/OrderListRelationFilter";
 import { ReviewListRelationFilter } from "../../review/base/ReviewListRelationFilter";
 
 @InputType()
@@ -91,15 +91,15 @@ class ProductWhereInput {
 
   @ApiProperty({
     required: false,
-    type: () => OrderWhereUniqueInput,
+    type: () => OrderListRelationFilter,
   })
   @ValidateNested()
-  @Type(() => OrderWhereUniqueInput)
+  @Type(() => OrderListRelationFilter)
   @IsOptional()
-  @Field(() => OrderWhereUniqueInput, {
+  @Field(() => OrderListRelationFilter, {
     nullable: true,
   })
-  order?: OrderWhereUniqueInput;
+  order?: OrderListRelationFilter;
 
   @ApiProperty({
     required: false,

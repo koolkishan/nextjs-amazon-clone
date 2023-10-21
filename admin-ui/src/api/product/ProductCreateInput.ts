@@ -1,6 +1,6 @@
 import { CategoryWhereUniqueInput } from "../category/CategoryWhereUniqueInput";
 import { InputJsonValue } from "../../types";
-import { OrderWhereUniqueInput } from "../order/OrderWhereUniqueInput";
+import { OrderCreateNestedManyWithoutProductsInput } from "./OrderCreateNestedManyWithoutProductsInput";
 import { ReviewCreateNestedManyWithoutProductsInput } from "./ReviewCreateNestedManyWithoutProductsInput";
 
 export type ProductCreateInput = {
@@ -9,7 +9,7 @@ export type ProductCreateInput = {
   description: InputJsonValue;
   discountPrice: number;
   images: InputJsonValue;
-  order?: OrderWhereUniqueInput | null;
+  order?: OrderCreateNestedManyWithoutProductsInput;
   reviews?: ReviewCreateNestedManyWithoutProductsInput;
   salePrice: number;
   title: string;
