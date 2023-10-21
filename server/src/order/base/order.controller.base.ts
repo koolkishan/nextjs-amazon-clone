@@ -131,6 +131,7 @@ export class OrderControllerBase {
         user: {
           select: {
             id: true,
+            username: true,
           },
         },
       },
