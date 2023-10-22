@@ -64,3 +64,18 @@ export const getOrder = async (orderId: string) => {
     return error;
   }
 };
+
+export const updateOrderPaymentStatus = async (
+  paymentStatus: boolean,
+  orderId: string
+) => {
+  try {
+    const response = await patch(createUrl(`/api/orders/${orderId}`), {
+      paymentStatus,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
