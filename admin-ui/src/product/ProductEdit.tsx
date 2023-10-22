@@ -31,9 +31,14 @@ export const ProductEdit = (props: EditProps): React.ReactElement => {
         <div />
         <NumberInput label="discountPrice" source="discountPrice" />
         <div />
-        <ReferenceInput source="order.id" reference="Order" label="orders">
-          <SelectInput optionText={OrderTitle} />
-        </ReferenceInput>
+        <ReferenceArrayInput
+          source="order"
+          reference="Order"
+          parse={(value: any) => value && value.map((v: any) => ({ id: v }))}
+          format={(value: any) => value && value.map((v: any) => v.id)}
+        >
+          <SelectArrayInput optionText={OrderTitle} />
+        </ReferenceArrayInput>
         <ReferenceArrayInput
           source="reviews"
           reference="Review"

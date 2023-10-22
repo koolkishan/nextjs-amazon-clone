@@ -22,7 +22,7 @@ import { Type } from "class-transformer";
 import { IsJSONValue } from "@app/custom-validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { InputJsonValue } from "../../types";
-import { OrderWhereUniqueInput } from "../../order/base/OrderWhereUniqueInput";
+import { OrderUpdateManyWithoutProductsInput } from "./OrderUpdateManyWithoutProductsInput";
 import { ReviewUpdateManyWithoutProductsInput } from "./ReviewUpdateManyWithoutProductsInput";
 
 @InputType()
@@ -82,15 +82,15 @@ class ProductUpdateInput {
 
   @ApiProperty({
     required: false,
-    type: () => OrderWhereUniqueInput,
+    type: () => OrderUpdateManyWithoutProductsInput,
   })
   @ValidateNested()
-  @Type(() => OrderWhereUniqueInput)
+  @Type(() => OrderUpdateManyWithoutProductsInput)
   @IsOptional()
-  @Field(() => OrderWhereUniqueInput, {
+  @Field(() => OrderUpdateManyWithoutProductsInput, {
     nullable: true,
   })
-  order?: OrderWhereUniqueInput | null;
+  order?: OrderUpdateManyWithoutProductsInput;
 
   @ApiProperty({
     required: false,

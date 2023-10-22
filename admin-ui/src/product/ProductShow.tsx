@@ -14,7 +14,6 @@ import {
 import { PRODUCT_TITLE_FIELD } from "./ProductTitle";
 import { USER_TITLE_FIELD } from "../user/UserTitle";
 import { CATEGORY_TITLE_FIELD } from "../category/CategoryTitle";
-import { ORDER_TITLE_FIELD } from "../order/OrderTitle";
 
 export const ProductShow = (props: ShowProps): React.ReactElement => {
   return (
@@ -33,9 +32,6 @@ export const ProductShow = (props: ShowProps): React.ReactElement => {
         <TextField label="discountPrice" source="discountPrice" />
         <TextField label="ID" source="id" />
         <TextField label="images" source="images" />
-        <ReferenceField label="orders" source="order.id" reference="Order">
-          <TextField source={ORDER_TITLE_FIELD} />
-        </ReferenceField>
         <TextField label="salePrice" source="salePrice" />
         <TextField label="title" source="title" />
         <DateField source="updatedAt" label="Updated At" />
