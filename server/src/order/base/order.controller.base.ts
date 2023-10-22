@@ -169,6 +169,7 @@ export class OrderControllerBase {
             id: true,
           },
         },
+        products: true,
       },
     });
     if (result === null) {
@@ -297,7 +298,7 @@ export class OrderControllerBase {
             id: true,
           },
         },
-
+        order: { select: { id: true } },
         colors: true,
         createdAt: true,
         description: true,

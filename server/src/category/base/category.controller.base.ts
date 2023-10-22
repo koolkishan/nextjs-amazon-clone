@@ -224,7 +224,11 @@ export class CategoryControllerBase {
             id: true,
           },
         },
-
+        order: {
+          select: {
+            id: true,
+          },
+        },
         colors: true,
         createdAt: true,
         description: true,

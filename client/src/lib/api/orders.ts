@@ -5,7 +5,6 @@ export const createOrder = async (orders: any) => {
   try {
     const response = await post(createUrl("/api/orders"), { ...orders });
     return response.data;
-    console.log({ response });
   } catch (error) {
     console.log(error);
   }
@@ -53,5 +52,15 @@ export const getUserOrders = async (userId: string) => {
     return response.data;
   } catch (error) {
     console.log({ error });
+  }
+};
+
+export const getOrder = async (orderId: string) => {
+  try {
+    const response = await get(createUrl(`/api/orders/${orderId}`));
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error;
   }
 };

@@ -134,6 +134,10 @@ input OrderCreateInput {
   user: UserWhereUniqueInput
 }
 
+input OrderCreateNestedManyWithoutProductsInput {
+  connect: [OrderWhereUniqueInput!]
+}
+
 input OrderCreateNestedManyWithoutUsersInput {
   connect: [OrderWhereUniqueInput!]
 }
@@ -164,6 +168,12 @@ input OrderUpdateInput {
   user: UserWhereUniqueInput
 }
 
+input OrderUpdateManyWithoutProductsInput {
+  connect: [OrderWhereUniqueInput!]
+  disconnect: [OrderWhereUniqueInput!]
+  set: [OrderWhereUniqueInput!]
+}
+
 input OrderUpdateManyWithoutUsersInput {
   connect: [OrderWhereUniqueInput!]
   disconnect: [OrderWhereUniqueInput!]
@@ -192,7 +202,7 @@ type Product {
   discountPrice: Float!
   id: String!
   images: JSON!
-  order: Order
+  order(orderBy: [OrderOrderByInput!], skip: Float, take: Float, where: OrderWhereInput): [Order!]!
   reviews(orderBy: [ReviewOrderByInput!], skip: Float, take: Float, where: ReviewWhereInput): [Review!]!
   salePrice: Float!
   title: String!
@@ -206,7 +216,7 @@ input ProductCreateInput {
   description: JSON!
   discountPrice: Float!
   images: JSON!
-  order: OrderWhereUniqueInput
+  order: OrderCreateNestedManyWithoutProductsInput
   reviews: ReviewCreateNestedManyWithoutProductsInput
   salePrice: Float!
   title: String!
@@ -235,7 +245,6 @@ input ProductOrderByInput {
   discountPrice: SortOrder
   id: SortOrder
   images: SortOrder
-  orderId: SortOrder
   salePrice: SortOrder
   title: SortOrder
   updatedAt: SortOrder
@@ -248,7 +257,7 @@ input ProductUpdateInput {
   description: JSON
   discountPrice: Float
   images: JSON
-  order: OrderWhereUniqueInput
+  order: OrderUpdateManyWithoutProductsInput
   reviews: ReviewUpdateManyWithoutProductsInput
   salePrice: Float
   title: String
@@ -274,7 +283,7 @@ input ProductWhereInput {
   discountPrice: FloatFilter
   id: StringFilter
   images: JsonFilter
-  order: OrderWhereUniqueInput
+  order: OrderListRelationFilter
   reviews: ReviewListRelationFilter
   salePrice: FloatFilter
   title: StringFilter

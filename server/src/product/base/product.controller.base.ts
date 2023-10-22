@@ -108,7 +108,9 @@ export class ProductControllerBase {
             id: true,
           },
         },
-
+        order: {
+          select: { id: true },
+        },
         colors: true,
         createdAt: true,
         description: true,
