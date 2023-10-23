@@ -1,8 +1,8 @@
 import { StateCreator } from "zustand";
 
 export interface CartSlice {
-  cartProducts: { id: string; quantity: number; price: string }[];
-  addToCart: (id: string, price: string) => void;
+  cartProducts: { id: string; quantity: number; price: number }[];
+  addToCart: (id: string, price: number) => void;
   removeFromCart: (id: string) => void;
   increaseQuantity: (id: string) => void;
   decreaseQuantity: (id: string) => void;
@@ -13,7 +13,7 @@ export interface CartSlice {
 
 export const createCartSlice: StateCreator<CartSlice> = (set, get) => ({
   cartProducts: [],
-  addToCart: (id: string, price: string) => {
+  addToCart: (id: string, price: number) => {
     set((state) => {
       // Check if the product is already in the cart
       const existingProduct = state.cartProducts.find(
@@ -85,7 +85,7 @@ export const createCartSlice: StateCreator<CartSlice> = (set, get) => ({
     // Calculate the total amount by summing the quantity * price of each product (replace 'price' with the actual price property)
     const totalAmount = cartProducts.reduce((total, product) => {
       // You need to replace 'price' with the actual price property of your products
-      const productPrice = parseInt(product.price); // Replace with the actual price of the product
+      const productPrice = product.price; // Replace with the actual price of the product
       return total + product.quantity * productPrice;
     }, 0);
 

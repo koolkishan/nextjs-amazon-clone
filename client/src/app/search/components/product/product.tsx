@@ -4,8 +4,9 @@ import { Ratings } from "./ratings";
 import { Colors } from "./colors";
 import { useRouter } from "next/navigation";
 import { useAppStore } from "@/store/store";
+import { ProductType } from "@/utils/types";
 
-const Product = ({ productDetails }) => {
+const Product = ({ productDetails }: { productDetails: ProductType }) => {
   const router = useRouter();
   const { addToCart } = useAppStore();
   console.log({ productDetails });
@@ -23,7 +24,10 @@ const Product = ({ productDetails }) => {
         Math.random() * (next7Days.getTime() - currentDate.getTime())
     );
 
-    const options = { day: "numeric", month: "long" };
+    const options = {
+      day: "numeric",
+      month: "long",
+    } as Intl.DateTimeFormatOptions;
     const formattedDate = randomDate.toLocaleDateString("en-US", options);
 
     return formattedDate;

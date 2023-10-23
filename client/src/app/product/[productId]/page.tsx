@@ -9,12 +9,15 @@ import { Ratings } from "@/app/search/components/product/ratings";
 import { FaCaretDown } from "react-icons/fa";
 import { PaymentInfo } from "./components/payment-info";
 import { getProductDetails } from "@/lib/api/products";
+import { ProductType } from "@/utils/types";
 
 const Page = ({ params: { productId } }: { params: { productId: string } }) => {
-  const [productDetails, setProductDetails] = useState(undefined);
+  const [productDetails, setProductDetails] = useState<ProductType | undefined>(
+    undefined
+  );
   useEffect(() => {
     const getData = async () => {
-      const response = await getProductDetails(productId);
+      const response: ProductType = await getProductDetails(productId);
       setProductDetails(response);
       console.log({ response });
     };

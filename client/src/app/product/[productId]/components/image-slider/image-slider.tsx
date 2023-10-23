@@ -1,12 +1,12 @@
 import Image from "next/image";
 import React, { useState } from "react";
 
-const ImageSlider = ({ images }) => {
+const ImageSlider = ({ images }: { images: string[] }) => {
   const [selected, setSelected] = useState(images[0]);
   return (
     <div className="flex gap-5">
       <ul className="flex flex-col gap-2">
-        {images.map((image, index) => (
+        {images.map((image) => (
           <li
             className={`p-2 bg-gray-200 rounded-sm w-max cursor-pointer`}
             key={image}

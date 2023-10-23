@@ -3,7 +3,12 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { FaLock } from "react-icons/fa";
 
-const PaymentInfo = ({ data }) => {
+const PaymentInfo = ({
+  data,
+}: {
+  data: { id: string; originalPrice: number; price: number };
+}) => {
+  console.log({ doandad: data });
   const router = useRouter();
   const { addToCart } = useAppStore();
   function getRandomDateInNext7Days() {
@@ -16,7 +21,10 @@ const PaymentInfo = ({ data }) => {
         Math.random() * (next7Days.getTime() - currentDate.getTime())
     );
 
-    const options = { day: "numeric", month: "long" };
+    const options = {
+      day: "numeric",
+      month: "long",
+    } as Intl.DateTimeFormatOptions;
     const formattedDate = randomDate.toLocaleDateString("en-US", options);
 
     return formattedDate;

@@ -5,15 +5,20 @@ import { Product } from "./components/product";
 import { BiRepeat } from "react-icons/bi";
 import { useSearchParams } from "next/navigation";
 import { getSearchResults } from "@/lib/api/search";
+import { ProductType } from "@/utils/types";
 
 const Page = () => {
   const searchParams = useSearchParams();
   const searchTerm = searchParams.get("query");
   const category = searchParams.get("category");
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<ProductType[]>([]);
   useEffect(() => {
     const getProducts = async () => {
-      const response = await getSearchResults(searchTerm as string, category);
+      const response: ProductType[] = await getSearchResults(
+        searchTerm as string,
+        category ?? ""
+      );
+
       setProducts(response ?? []);
     };
     if (searchTerm || category) {

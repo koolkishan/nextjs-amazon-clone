@@ -8,17 +8,68 @@ import { RecentOrders } from "./components/recent-orders";
 import { Card, CardHeader } from "@nextui-org/react";
 import axios from "axios";
 
+interface User {
+  username: string;
+}
+
+interface RevenueData {
+  date: string;
+  revenue: number;
+}
+
+interface RecentOrder {
+  id: string;
+  price: number;
+  user: User;
+}
+
+interface TopCategory {
+  id: string;
+  name: string;
+  revenue: number;
+}
+
+interface YearlySalesData {
+  month: string;
+  sales: number;
+}
+
+interface Stats {
+  category: number;
+  products: number;
+  users: number;
+  orders: number;
+  revenue: number;
+}
+
+interface DashbordAPIResponseType {
+  stats: Stats;
+  revenueData: RevenueData[];
+  recentOrders: RecentOrder[];
+  top5Categories: TopCategory[];
+  yearlySalesData: YearlySalesData[];
+}
+
 const Page = () => {
-  const [stats, setStats] = useState(undefined);
-  const [dailyRevenueData, setDailyRevenueData] = useState(undefined);
-  const [categorySalesData, setCategorySalesData] = useState(undefined);
-  const [recentOrders, setRecentOrders] = useState(undefined);
-  const [monthlySales, setMonthlySales] = useState(undefined);
+  const [stats, setStats] = useState<Stats | undefined>(undefined);
+  const [dailyRevenueData, setDailyRevenueData] = useState<
+    RevenueData[] | undefined
+  >(undefined);
+  const [categorySalesData, setCategorySalesData] = useState<
+    TopCategory[] | undefined
+  >(undefined);
+  const [recentOrders, setRecentOrders] = useState<RecentOrder[] | undefined>(
+    undefined
+  );
+  const [monthlySales, setMonthlySales] = useState<
+    YearlySalesData[] | undefined
+  >(undefined);
   const [isLoaded, setIsLoaded] = useState(false);
+
   useEffect(() => {
     const getDashboardData = async () => {
       try {
-        const response = await axios.get(
+        const response = await axios.get<DashbordAPIResponseType>(
           "http://localhost:5000/admin/dashboard/api"
         );
 
@@ -42,11 +93,11 @@ const Page = () => {
       {isLoaded && (
         <div className="m-10">
           <div className="flex justify-between gap-5">
-            <Stats title="Total category" data={stats.category} />
-            <Stats title="Total products" data={stats.products} />
-            <Stats title="Total users" data={stats.users} />
-            <Stats title="Total orders" data={stats.orders} />
-            <Stats title="Total revenue" data={stats.revenue} />
+            <Stats title="Total category" data={stats?.category ?? 0} />
+            <Stats title="Total products" data={stats?.products ?? 0} />
+            <Stats title="Total users" data={stats?.users ?? 0} />
+            <Stats title="Total orders" data={stats?.orders ?? 0} />
+            <Stats title="Total revenue" data={stats?.revenue ?? 0} />
           </div>
           <div className="grid grid-cols-2 gap-10 mt-10">
             <div className="h-full min-h-[50vh]">

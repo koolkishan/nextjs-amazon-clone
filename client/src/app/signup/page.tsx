@@ -5,7 +5,7 @@ import { AxiosResponse } from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { FormEvent, useState } from "react";
+import React, { useState } from "react";
 
 const Page = () => {
   const [email, setEmail] = useState("");
@@ -14,7 +14,7 @@ const Page = () => {
   const router = useRouter();
   const handleSignup = async () => {
     if (email && password) {
-      const response: AxiosResponse = await signup(email, password);
+      const response = await signup(email, password);
       console.log({ response });
       if (response?.username) {
         console.log("in if");

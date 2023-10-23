@@ -15,12 +15,19 @@ import {
   Selection,
   SortDescriptor,
   Tooltip,
+  useDisclosure,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
 } from "@nextui-org/react";
 
 import { columns } from "./data";
 import { FaEdit, FaPlus, FaSearch, FaTrashAlt } from "react-icons/fa";
 import { deleteProduct, getAllProducts } from "@/lib/api/products";
 import { useRouter } from "next/navigation";
+import { useAppStore } from "@/store/store";
 
 type User = any;
 
@@ -44,6 +51,9 @@ export default function Page() {
 
   const headerColumns = columns;
   const [products, setProducts] = useState([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [deleteId, setdeleteId] = useState(undefined);
+  const { setToast } = useAppStore();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -55,13 +65,22 @@ export default function Page() {
     fetchProducts();
   }, []);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = (product: string) => {
+    if (product?._count?.orders > 0)
+      return setToast("Cannot delete product with products.");
+    setdeleteId(product.id);
+    onOpen();
+  };
+
+  const confirmDelete = async () => {
     const response = await deleteProduct(id);
     if (response) {
       setProducts((prevProducts) =>
         prevProducts.filter((product) => product.id !== id)
       );
-    }
+      setToast("Product deleted successfully.");
+    } else setToast("Unable to delete product.");
+    onClose();
   };
 
   const handleEdit = async (id: string) => {};
@@ -113,11 +132,8 @@ export default function Page() {
               </span>
             </Tooltip>
             <Tooltip color="danger" content="Delete Product">
-              <span
-                className="text-lg text-danger cursor-pointer active:opacity-50"
-                onClick={() => handleDelete(user.id)}
-              >
-                <FaTrashAlt />
+              <span className="text-lg text-danger cursor-pointer active:opacity-50">
+                <FaTrashAlt onClick={() => handleDelete(user)} />
               </span>
             </Tooltip>
           </div>
@@ -289,6 +305,28 @@ export default function Page() {
           )}
         </TableBody>
       </Table>
+      <Modal backdrop="blur" isOpen={isOpen} onClose={onClose}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Are you sure you want to delete the product?
+              </ModalHeader>
+              <ModalBody>
+                <p>This action is irreversible.</p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="default" onPress={onClose}>
+                  Close
+                </Button>
+                <Button color="danger" onPress={confirmDelete}>
+                  Delete
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   );
 }
