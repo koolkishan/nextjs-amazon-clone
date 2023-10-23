@@ -6,7 +6,7 @@ export interface CartSlice {
   removeFromCart: (id: string) => void;
   increaseQuantity: (id: string) => void;
   decreaseQuantity: (id: string) => void;
-  getQuantityById: (id: string) => number | undefined; // New method
+  getQuantityById: (id: string) => number; // New method
   getTotalAmount: () => number; // New method
   emptyCart: () => void;
 }
@@ -77,19 +77,17 @@ export const createCartSlice: StateCreator<CartSlice> = (set, get) => ({
     const product = get().cartProducts.find((product) => product.id === id);
 
     // If the product is found, return its quantity; otherwise, return undefined
-    return product ? product.quantity : undefined;
+    return product ? product.quantity : 0;
   },
   getTotalAmount: () => {
     const { cartProducts } = get();
-    console.log({ cartProducts });
+
     // Calculate the total amount by summing the quantity * price of each product (replace 'price' with the actual price property)
     const totalAmount = cartProducts.reduce((total, product) => {
       // You need to replace 'price' with the actual price property of your products
       const productPrice = product.price; // Replace with the actual price of the product
       return total + product.quantity * productPrice;
     }, 0);
-
-    console.log({ totalAmount });
 
     return totalAmount;
   },

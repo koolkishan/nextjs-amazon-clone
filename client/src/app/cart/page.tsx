@@ -5,26 +5,31 @@ import { useAppStore } from "@/store/store";
 import { getMultipleProductDetails } from "@/lib/api/products";
 import { CgDanger } from "react-icons/cg";
 import { useRouter } from "next/navigation";
+import { ProductType } from "@/utils/types";
 
 const Page = () => {
   const { cartProducts, getTotalAmount, userInfo, setOrdersInfo } =
     useAppStore();
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<ProductType[]>([]);
   const [primeShipping, setPrimeShipping] = useState(false);
   const [isCod, setIsCod] = useState(false);
   const router = useRouter();
   useEffect(() => {
     const getData = async () => {
-      const response = await getMultipleProductDetails(
-        cartProducts.map((product) => product.id)
-      );
-      setProducts(response);
+      const response: ProductType[] | undefined =
+        await getMultipleProductDetails(
+          cartProducts.map((product) => product.id)
+        );
+      if (response) {
+        setProducts(response);
+      } else {
+        setProducts([]);
+      }
     };
     getData();
   }, [cartProducts]);
 
   const handleCheckoutRedirect = () => {
-    console.log({ userInfo });
     const data = {
       products: {
         connect: products.map((product) => {
@@ -81,7 +86,7 @@ const Page = () => {
                     </div>
                     <div className="ml-2 text-sm">
                       <label
-                        for="helper-radio"
+                        htmlFor="helper-radio"
                         className="font-medium text-gray-900 dark:text-gray-300"
                       >
                         Free shipping
@@ -109,7 +114,7 @@ const Page = () => {
                     </div>
                     <div className="ml-2 text-sm">
                       <label
-                        for="helper-radio2"
+                        htmlFor="helper-radio2"
                         className="font-medium text-gray-900 dark:text-gray-300"
                       >
                         Prime Shipping ($40 Extra)
@@ -152,7 +157,7 @@ const Page = () => {
                 </div>
                 <div className="ml-2 text-sm">
                   <label
-                    for="stripe"
+                    htmlFor="stripe"
                     className="font-medium text-gray-900 dark:text-gray-300"
                   >
                     Stripe
@@ -174,7 +179,7 @@ const Page = () => {
                 </div>
                 <div className="ml-2 text-sm">
                   <label
-                    for="cod"
+                    htmlFor="cod"
                     className="font-medium text-gray-900 dark:text-gray-300"
                   >
                     Cash on Delivery

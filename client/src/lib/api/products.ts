@@ -3,7 +3,7 @@ import { createUrl, post, get, axiosDelete } from "./api-client";
 export const addProduct = async (data: any) => {
   try {
     const response = await post(createUrl("/api/products/"), { ...data });
-    console.log({ response });
+
     return response.status === 201 ? true : false;
   } catch (error) {
     console.log({ error });
@@ -16,7 +16,6 @@ export const getAllProducts = async () => {
     if (response.data) {
       return response.data;
     }
-    console.log({ response });
   } catch (error) {
     console.log(error);
   }
@@ -38,10 +37,10 @@ export const getMultipleProductDetails = async (productIds: string[]) => {
     const productDetails = [];
     for (let i = 0; i < productIds.length; i++) {
       const data = await getProductDetails(productIds[i]);
-      console.log({ data });
+
       productDetails.push(data);
     }
-    console.log({ productDetails });
+
     return productDetails;
   } catch (error) {
     console.log(error);

@@ -24,7 +24,6 @@ export default function Page({
     const getData = async () => {
       const response = await getCategory(categoryID);
       setCategory(response.name);
-      console.log({ response });
     };
     if (categoryID) {
       getData();

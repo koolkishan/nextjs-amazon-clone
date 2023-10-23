@@ -15,7 +15,6 @@ const MonthlySales = ({
 }: {
   data: { month: string; sales: number }[];
 }) => {
-  console.log({ monthlysales: data });
   return (
     <ResponsiveContainer height="100%" width="100%">
       <BarChart data={data}>

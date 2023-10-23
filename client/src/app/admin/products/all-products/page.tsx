@@ -77,7 +77,7 @@ export default function Page() {
   useEffect(() => {
     const fetchProducts = async () => {
       const response = await getAllProducts();
-      console.log({ response });
+
       if (response) {
         setProducts(response);
       }

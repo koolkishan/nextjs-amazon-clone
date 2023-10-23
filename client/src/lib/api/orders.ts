@@ -14,7 +14,6 @@ export const createOrder = async (orders: any) => {
 export const getAllOrders = async () => {
   try {
     const response = await get(createUrl("/api/orders"));
-    console.log({ response });
     return response.data;
   } catch (error) {
     console.log(error);
@@ -29,7 +28,7 @@ export const recordStripePayment = async (paymnent_intent: string) => {
       },
     });
     const response = await get(createUrl(`/api/orders?${query}`));
-    console.log({ response });
+
     if (response.data.length) {
       const updateResponse = await patch(
         createUrl(`/api/orders/${response.data[0].id}`),

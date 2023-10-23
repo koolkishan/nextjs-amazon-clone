@@ -80,8 +80,6 @@ const Page = () => {
       variants,
     };
 
-    console.log({ data });
-
     const result = await addProduct(data);
     if (result) {
       router.push("/admin/products/all-products");

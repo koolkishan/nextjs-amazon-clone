@@ -9,7 +9,7 @@ import { ProductType } from "@/utils/types";
 const Product = ({ productDetails }: { productDetails: ProductType }) => {
   const router = useRouter();
   const { addToCart } = useAppStore();
-  console.log({ productDetails });
+
   const handleClick = () => {
     router.push(`/product/${productDetails.id}`);
   };

@@ -19,7 +19,6 @@ const Page = ({ params: { productId } }: { params: { productId: string } }) => {
     const getData = async () => {
       const response: ProductType = await getProductDetails(productId);
       setProductDetails(response);
-      console.log({ response });
     };
     getData();
   }, [productId]);

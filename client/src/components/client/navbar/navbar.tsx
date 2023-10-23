@@ -13,24 +13,35 @@ import {
   PopoverTrigger,
 } from "@nextui-org/react";
 import { getAllCategories } from "@/lib/api/category";
+
+type CategoryType = {
+  createdAt: string;
+  id: string;
+  name: string;
+  updatedAt: string;
+  _count: {
+    products: number;
+  };
+};
+
 const Navbar = () => {
   const { cartProducts, userInfo } = useAppStore();
   const [searchTerm, setSearchTerm] = useState("");
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
   const [categoriesPopover, setcategoriesPopover] = useState(false);
   const [detailsPopover, setDetailsPopover] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
-      const response = await getAllCategories();
-      const computedCategory = [];
+      const response: CategoryType[] = await getAllCategories();
+
+      const computedCategory: CategoryType[] = [];
       response.forEach((category) => {
         if (category._count.products > 0) {
           computedCategory.push(category);
         }
       });
       setCategories(computedCategory);
-      console.log({ response });
     };
     getData();
   }, []);

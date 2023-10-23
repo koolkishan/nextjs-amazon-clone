@@ -49,7 +49,7 @@ const Page = ({ params: { orderId } }: { params: { orderId: string } }) => {
   useEffect(() => {
     const getData = async () => {
       const response = await getOrder(orderId);
-      console.log({ responseasdasd: response });
+
       setPaymentStatus(response?.paymentStatus ? "completed" : "pending");
       setOrder(response);
     };

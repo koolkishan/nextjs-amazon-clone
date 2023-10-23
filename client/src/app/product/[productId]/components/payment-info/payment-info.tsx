@@ -8,7 +8,6 @@ const PaymentInfo = ({
 }: {
   data: { id: string; originalPrice: number; price: number };
 }) => {
-  console.log({ doandad: data });
   const router = useRouter();
   const { addToCart } = useAppStore();
   function getRandomDateInNext7Days() {

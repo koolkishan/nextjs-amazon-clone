@@ -52,18 +52,10 @@ interface DashbordAPIResponseType {
 
 const Page = () => {
   const [stats, setStats] = useState<Stats | undefined>(undefined);
-  const [dailyRevenueData, setDailyRevenueData] = useState<
-    RevenueData[] | undefined
-  >(undefined);
-  const [categorySalesData, setCategorySalesData] = useState<
-    TopCategory[] | undefined
-  >(undefined);
-  const [recentOrders, setRecentOrders] = useState<RecentOrder[] | undefined>(
-    undefined
-  );
-  const [monthlySales, setMonthlySales] = useState<
-    YearlySalesData[] | undefined
-  >(undefined);
+  const [dailyRevenueData, setDailyRevenueData] = useState<RevenueData[]>([]);
+  const [categorySalesData, setCategorySalesData] = useState<TopCategory[]>([]);
+  const [recentOrders, setRecentOrders] = useState<RecentOrder[]>([]);
+  const [monthlySales, setMonthlySales] = useState<YearlySalesData[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {

@@ -28,7 +28,6 @@ const Page = () => {
         setClientSecret(response?.client_secret);
       }
       setOrderCreated(true);
-      console.log({ response });
     };
     if (ordersInfo) {
       handleCreateOrder();

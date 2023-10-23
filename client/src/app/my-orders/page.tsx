@@ -10,7 +10,6 @@ import {
   Input,
   Button,
   Chip,
-  User,
   Pagination,
   Selection,
   SortDescriptor,
@@ -22,7 +21,30 @@ import { useAppStore } from "@/store/store";
 import { getUserOrders } from "@/lib/api/orders";
 import { useRouter } from "next/navigation";
 
-type User = any;
+interface Status {
+  paymentMode: string;
+}
+
+interface User {
+  id: string;
+  username: string;
+}
+
+interface Count {
+  products: number;
+}
+
+interface OrdersType {
+  createdAt: string;
+  id: string;
+  paymentIntent: string;
+  paymentStatus: boolean;
+  price: number;
+  status: Status;
+  updatedAt: string;
+  user: User;
+  _count: Count;
+}
 
 const columns = [
   { name: "Order ID", uid: "id" },
@@ -52,7 +74,7 @@ export default function Page() {
   const hasSearchFilter = Boolean(filterValue);
 
   const { userInfo } = useAppStore();
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState<OrdersType[]>([]);
   useEffect(() => {
     const getOrders = async () => {
       const response = await getUserOrders(userInfo.id);
@@ -85,9 +107,9 @@ export default function Page() {
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: User, b: User) => {
-      const first = a[sortDescriptor.column as keyof User] as number;
-      const second = b[sortDescriptor.column as keyof User] as number;
+    return [...items].sort((a: OrdersType, b: OrdersType) => {
+      const first = a[sortDescriptor.column as keyof OrdersType] as number;
+      const second = b[sortDescriptor.column as keyof OrdersType] as number;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
@@ -95,30 +117,35 @@ export default function Page() {
   }, [sortDescriptor, items]);
 
   const renderCell = React.useCallback(
-    (order: User, columnKey: React.Key) => {
-      const cellValue = order[columnKey as keyof User];
+    (order: OrdersType, columnKey: React.Key) => {
+      const cellValue = order[columnKey as keyof OrdersType];
 
       switch (columnKey) {
         case "_count":
-          return cellValue.products;
+          // Refine the type of cellValue as Count
+          const countValue = cellValue as Count;
+          return <span>{countValue.products}</span>;
         case "createdAt":
-          return cellValue.split("T")[0];
+          if (typeof cellValue === "string") {
+            return <span>{cellValue.split("T")[0]}</span>;
+          }
+          return <>{cellValue}</>;
         case "status":
+          const statusValue = cellValue as Status;
           return (
             <Chip
               className="capitalize"
               color={
-                cellValue.paymentMode === "stripe" ? "secondary" : "success"
+                statusValue.paymentMode === "stripe" ? "secondary" : "success"
               }
               size="sm"
               variant="flat"
             >
-              {cellValue.paymentMode === "stripe"
+              {statusValue.paymentMode === "stripe"
                 ? "Stripe"
                 : "Cash on delivery"}
             </Chip>
           );
-
         case "paymentStatus":
           return (
             <Chip
@@ -130,7 +157,6 @@ export default function Page() {
               {cellValue ? "Completed" : "Pending"}
             </Chip>
           );
-
         case "actions":
           return (
             <div className="relative flex justify-start items-center gap-2">
@@ -149,7 +175,7 @@ export default function Page() {
             </div>
           );
         default:
-          return cellValue;
+          return <>{cellValue}</>;
       }
     },
     [router]
