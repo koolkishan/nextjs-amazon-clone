@@ -1,9 +1,16 @@
 import { Ratings } from "@/app/search/components/product/ratings";
+import { ProductType } from "@/utils/types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const ProductGrid = ({ products, title }: any) => {
+const ProductGrid = ({
+  products,
+  title,
+}: {
+  products: ProductType[];
+  title: string;
+}) => {
   const router = useRouter();
   function getRandomDateInNext7Days() {
     const currentDate = new Date();
@@ -15,7 +22,10 @@ const ProductGrid = ({ products, title }: any) => {
         Math.random() * (next7Days.getTime() - currentDate.getTime())
     );
 
-    const options = { day: "numeric", month: "long" };
+    const options = {
+      day: "numeric",
+      month: "long",
+    } as Intl.DateTimeFormatOptions;
     const formattedDate = randomDate.toLocaleDateString("en-US", options);
 
     return formattedDate;

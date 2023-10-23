@@ -1,3 +1,4 @@
+import { AxiosError, AxiosResponse } from "axios";
 import { createUrl, get, patch, post } from "./api-client";
 import qs from "qs";
 
@@ -68,7 +69,7 @@ export const getOrder = async (orderId: string) => {
 export const updateOrderPaymentStatus = async (
   paymentStatus: boolean,
   orderId: string
-) => {
+): Promise<AxiosResponse | AxiosError> => {
   try {
     const response = await patch(createUrl(`/api/orders/${orderId}`), {
       paymentStatus,
@@ -76,6 +77,6 @@ export const updateOrderPaymentStatus = async (
     return response;
   } catch (error) {
     console.log(error);
-    return error;
+    return error as AxiosError;
   }
 };

@@ -5,7 +5,7 @@ const jwtKey = "accessToken";
 
 axios.interceptors.request.use(
   (config) => {
-    const { origin } = new URL(config.url);
+    const { origin } = new URL(config.url as string);
     const allowedOrigins = [apiUrl];
     const accessToken = localStorage.getItem(jwtKey);
     if (allowedOrigins.includes(origin)) {
@@ -18,9 +18,9 @@ axios.interceptors.request.use(
   }
 );
 
-export const createUrl = (endpoint) => new URL(endpoint, apiUrl).href;
+export const createUrl = (endpoint: string) => new URL(endpoint, apiUrl).href;
 export const isStoredJwt = () => Boolean(localStorage.getItem(jwtKey));
-export const setStoredJwt = (accessToken) =>
+export const setStoredJwt = (accessToken: string) =>
   localStorage.setItem(jwtKey, accessToken);
 
 export const get = axios.get;

@@ -19,20 +19,28 @@ const columns = [
   },
 ];
 
-export default function RecentOrders({ data }) {
-  const renderCell = React.useCallback((user, columnKey) => {
-    const cellValue = user[columnKey];
-
-    switch (columnKey) {
-      case "user":
-        return (
-          <User avatarProps={{ radius: "lg" }} name={cellValue.username}></User>
-        );
-
-      default:
-        return cellValue;
-    }
-  }, []);
+export default function RecentOrders({
+  data,
+}: {
+  data: { id: string; price: number; user: { username: string } }[];
+}) {
+  const renderCell = React.useCallback(
+    (
+      user: { id: string; price: number; user: { username: string } },
+      columnKey: string
+    ) => {
+      const cellValue =
+        user[
+          columnKey as keyof {
+            id: string;
+            price: number;
+            user: { username: string };
+          }
+        ];
+      return <>{cellValue}</>;
+    },
+    []
+  );
 
   return (
     <Table aria-label="Example table with custom cells">
@@ -50,7 +58,7 @@ export default function RecentOrders({ data }) {
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
+              <TableCell>{renderCell(item, columnKey as string)}</TableCell>
             )}
           </TableRow>
         )}

@@ -70,7 +70,7 @@ const Side = () => {
     { label: "Orders", icon: <FaShoppingCart />, link: "/admin/orders" },
   ];
 
-  const handleItemClick = (link) => {
+  const handleItemClick = (link: string) => {
     // Update the selected item when a menu item is clicked
     setSelectedItem(link);
     router.push(link);

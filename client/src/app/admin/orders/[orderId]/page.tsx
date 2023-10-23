@@ -3,17 +3,53 @@
 import { getOrder, updateOrderPaymentStatus } from "@/lib/api/orders";
 import React, { useEffect, useState } from "react";
 import { Product } from "./components";
-import { Button, Radio, RadioGroup } from "@nextui-org/react";
+import { Radio, RadioGroup } from "@nextui-org/react";
 import { useAppStore } from "@/store/store";
+
+interface ProductType {
+  categoryId: string;
+  colors: string[];
+  createdAt: string;
+  description: string[];
+  discountPrice: number;
+  id: string;
+  images: string[];
+  salePrice: number;
+  title: string;
+  updatedAt: string;
+  variants: string[];
+}
+
+interface Status {
+  paymentMode: string;
+}
+
+interface User {
+  id: string;
+}
+
+interface OrderType {
+  createdAt: string;
+  id: string;
+  paymentIntent: string;
+  paymentStatus: boolean;
+  price: number;
+  status: Status;
+  updatedAt: string;
+  user: User;
+  products: ProductType[];
+}
 
 const Page = ({ params: { orderId } }: { params: { orderId: string } }) => {
   const { setToast } = useAppStore();
-  const [order, setOrder] = useState(undefined);
-  const [paymentStatus, setPaymentStatus] = useState(undefined);
+  const [order, setOrder] = useState<OrderType | undefined>(undefined);
+  const [paymentStatus, setPaymentStatus] = useState<"completed" | "pending">(
+    "pending"
+  );
   useEffect(() => {
     const getData = async () => {
       const response = await getOrder(orderId);
-      console.log({ response });
+      console.log({ responseasdasd: response });
       setPaymentStatus(response?.paymentStatus ? "completed" : "pending");
       setOrder(response);
     };
@@ -28,12 +64,11 @@ const Page = ({ params: { orderId } }: { params: { orderId: string } }) => {
     );
     if (response.status === 200) {
       setOrder({
-        ...order,
+        ...(order as OrderType),
         paymentStatus: paymentStatus === "completed" ? true : false,
       });
       setToast("Order status updated.");
     }
-    console.log({ response });
   };
 
   return (
@@ -81,7 +116,9 @@ const Page = ({ params: { orderId } }: { params: { orderId: string } }) => {
                 <RadioGroup
                   className="my-4"
                   value={paymentStatus}
-                  onValueChange={setPaymentStatus}
+                  onValueChange={(value) =>
+                    setPaymentStatus(value as "completed" | "pending")
+                  }
                 >
                   <Radio value="pending" checked={!order.paymentStatus}>
                     Pending

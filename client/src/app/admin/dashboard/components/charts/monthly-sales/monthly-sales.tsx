@@ -10,7 +10,12 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const MonthlySales = ({ data }) => {
+const MonthlySales = ({
+  data,
+}: {
+  data: { month: string; sales: number }[];
+}) => {
+  console.log({ monthlysales: data });
   return (
     <ResponsiveContainer height="100%" width="100%">
       <BarChart data={data}>

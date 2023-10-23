@@ -15,7 +15,7 @@ const Page = () => {
 
   const handleSignIn = async () => {
     if (email && password) {
-      const response: AxiosResponse = await login(email, password);
+      const response = await login(email, password);
       if (response instanceof AxiosError) {
         setToast(response?.response?.data.message);
       }

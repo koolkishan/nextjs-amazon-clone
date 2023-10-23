@@ -2,8 +2,11 @@ import dynamic from "next/dynamic";
 import React from "react";
 import { PieChart, Pie, Legend, Tooltip, ResponsiveContainer } from "recharts";
 
-const CategorySales = ({ data }) => {
-  console.log({ data });
+const CategorySales = ({
+  data,
+}: {
+  data: { id: string; name: string; revenue: number }[];
+}) => {
   return (
     <div style={{ width: "100%", height: "100%" }} className="">
       <ResponsiveContainer height="100%" width="100%">

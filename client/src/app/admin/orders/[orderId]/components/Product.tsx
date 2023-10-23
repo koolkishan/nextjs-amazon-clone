@@ -1,9 +1,20 @@
-import { useAppStore } from "@/store/store";
-import { ProductType } from "@/utils/types";
 import Image from "next/image";
 import React from "react";
-import { FaTrash } from "react-icons/fa";
-const Product = ({ productData }: { productData: ProductType }) => {
+
+interface Product {
+  categoryId: string;
+  colors: string[];
+  createdAt: string;
+  description: string[];
+  discountPrice: number;
+  id: string;
+  images: string[];
+  salePrice: number;
+  title: string;
+  updatedAt: string;
+  variants: string[];
+}
+const Product = ({ productData }: { productData: Product }) => {
   return (
     <div className="flex gap-10 bg-gray-100 p-10 rounded-sm items-center ">
       <div className="relative h-24 w-24">

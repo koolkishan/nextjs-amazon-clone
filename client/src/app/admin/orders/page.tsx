@@ -22,7 +22,32 @@ import { FaEye, FaSearch } from "react-icons/fa";
 import { getAllOrders } from "@/lib/api/orders";
 import { useRouter } from "next/navigation";
 
-type User = any;
+// type User = any;
+
+interface Status {
+  paymentMode: string;
+}
+
+interface User {
+  id: string;
+  username: string;
+}
+
+interface Count {
+  products: number;
+}
+
+interface OrdersType {
+  createdAt: string;
+  id: string;
+  paymentIntent: string;
+  paymentStatus: boolean;
+  price: number;
+  status: Status;
+  updatedAt: string;
+  user: User;
+  _count: Count;
+}
 
 const columns = [
   { name: "Order ID", uid: "id" },
@@ -52,11 +77,11 @@ export default function Page() {
 
   const hasSearchFilter = Boolean(filterValue);
 
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState<OrdersType[]>([]);
   useEffect(() => {
     const getOrders = async () => {
       const response = await getAllOrders();
-      console.log({ response });
+
       setOrders(response.reverse());
     };
     getOrders();
@@ -86,9 +111,9 @@ export default function Page() {
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: User, b: User) => {
-      const first = a[sortDescriptor.column as keyof User] as number;
-      const second = b[sortDescriptor.column as keyof User] as number;
+    return [...items].sort((a: OrdersType, b: OrdersType) => {
+      const first = a[sortDescriptor.column as keyof OrdersType] as number;
+      const second = b[sortDescriptor.column as keyof OrdersType] as number;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
@@ -96,44 +121,41 @@ export default function Page() {
   }, [sortDescriptor, items]);
 
   const renderCell = React.useCallback(
-    (order: User, columnKey: React.Key) => {
-      const cellValue = order[columnKey as keyof User];
+    (order: OrdersType, columnKey: React.Key) => {
+      const cellValue = order[columnKey as keyof OrdersType];
 
       switch (columnKey) {
         case "user":
-          return cellValue.username;
+          const user = cellValue as User;
+          return user.username;
         case "_count":
-          return cellValue.products;
+          const count = cellValue as Count;
+          return count.products;
         case "createdAt":
-          return cellValue.split("T")[0];
+          return (cellValue as string).split("T")[0];
         case "status":
+          const status = cellValue as Status;
           return (
             <Chip
               className="capitalize"
-              color={
-                cellValue.paymentMode === "stripe" ? "secondary" : "success"
-              }
+              color={status.paymentMode === "stripe" ? "secondary" : "success"}
               size="sm"
               variant="flat"
             >
-              {cellValue.paymentMode === "stripe"
-                ? "Stripe"
-                : "Cash on delivery"}
+              {status.paymentMode === "stripe" ? "Stripe" : "Cash on delivery"}
             </Chip>
           );
-
         case "paymentStatus":
           return (
             <Chip
               className="capitalize"
-              color={cellValue ? "success" : "danger"}
+              color={(cellValue as boolean) ? "success" : "danger"}
               size="sm"
               variant="flat"
             >
-              {cellValue ? "Completed" : "Pending"}
+              {(cellValue as boolean) ? "Completed" : "Pending"}
             </Chip>
           );
-
         case "actions":
           return (
             <div className="relative flex justify-start items-center gap-2">
@@ -152,7 +174,7 @@ export default function Page() {
             </div>
           );
         default:
-          return cellValue;
+          return <>{cellValue}</>;
       }
     },
     [router]

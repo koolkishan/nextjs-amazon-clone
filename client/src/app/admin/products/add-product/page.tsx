@@ -216,7 +216,9 @@ const Page = () => {
               labelPlacement="outside"
               size="lg"
               placeholder="Select Category"
+              // @ts-ignore
               onSelectionChange={setCategory}
+              // @ts-ignore
               value={category}
             >
               {categories.map((category) => (
@@ -227,6 +229,7 @@ const Page = () => {
             </Select>
             <CldUploadButton
               options={{ multiple: true }}
+              // @ts-ignore
               onUpload={handleUpload}
               uploadPreset="kmsiloa7"
             >

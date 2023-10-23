@@ -10,7 +10,11 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const DailyRevenue = ({ data }) => {
+const DailyRevenue = ({
+  data,
+}: {
+  data: { date: string; revenue: number }[];
+}) => {
   return (
     <ResponsiveContainer height="100%" width="100%">
       <AreaChart data={data}>
