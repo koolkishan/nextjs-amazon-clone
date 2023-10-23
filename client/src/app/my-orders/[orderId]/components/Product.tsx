@@ -1,19 +1,8 @@
-import { useAppStore } from "@/store/store";
+import { ProductType } from "@/utils/types";
 import Image from "next/image";
 import React from "react";
-import { FaTrash } from "react-icons/fa";
-const Product = ({
-  productData,
-}: {
-  productData: {
-    id: number;
-    title: string;
-    color: string;
-    quantity: string;
-    price: string;
-    images: string[];
-  };
-}) => {
+
+const Product = ({ productData }: { productData: ProductType }) => {
   return (
     <div className="flex gap-10 bg-gray-100 p-10 rounded-sm items-center ">
       <div className="relative h-24 w-24">

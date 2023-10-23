@@ -27,10 +27,22 @@ import { deleteCategory, getAllCategories } from "@/lib/api/category";
 import { useRouter } from "next/navigation";
 import { useAppStore } from "@/store/store";
 
+interface Count {
+  products: number;
+}
+
+interface Category {
+  createdAt: string;
+  id: string;
+  name: string;
+  updatedAt: string;
+  _count: Count;
+}
+
 export default function Page() {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [deleteId, setdeleteId] = useState(undefined);
+  const [deleteId, setdeleteId] = useState<string | undefined>(undefined);
   const { setToast } = useAppStore();
 
   const router = useRouter();
@@ -44,7 +56,7 @@ export default function Page() {
     getData();
   }, []);
 
-  const handleDelete = (category: string) => {
+  const handleDelete = (category: Category) => {
     if (category._count.products > 0)
       return setToast("Cannot delete category with products.");
     setdeleteId(category.id);
@@ -52,18 +64,20 @@ export default function Page() {
   };
 
   const confirmDelete = async () => {
-    const response = await deleteCategory(deleteId);
-    if (response.status === 200) {
-      const clonedCategories = [...categories];
-      const index = clonedCategories.findIndex(
-        (category) => category.id === deleteId
-      );
-      if (index !== -1) {
-        clonedCategories.splice(index, 1);
-      }
-      setCategories(clonedCategories);
-      setToast("Category deleted successfully.");
-    } else setToast("Unable to delete category.");
+    if (deleteId) {
+      const response = await deleteCategory(deleteId);
+      if (response.status === 200) {
+        const clonedCategories = [...categories];
+        const index = clonedCategories.findIndex(
+          (category) => category.id === deleteId
+        );
+        if (index !== -1) {
+          clonedCategories.splice(index, 1);
+        }
+        setCategories(clonedCategories);
+        setToast("Category deleted successfully.");
+      } else setToast("Unable to delete category.");
+    }
     onClose();
   };
 
@@ -74,7 +88,6 @@ export default function Page() {
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
 
-  const [statusFilter, setStatusFilter] = React.useState("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState({
     column: "age",
@@ -96,7 +109,7 @@ export default function Page() {
     }
 
     return filteredUsers;
-  }, [categories, filterValue]);
+  }, [categories, filterValue, hasSearchFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -117,32 +130,35 @@ export default function Page() {
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((user, columnKey) => {
-    const cellValue = user[columnKey];
+  const renderCell = React.useCallback(
+    (category: Category, columnKey: string) => {
+      const cellValue = category[columnKey];
 
-    switch (columnKey) {
-      case "products": {
-        return <div>{user["_count"].products}</div>;
+      switch (columnKey) {
+        case "products": {
+          return <div>{category["_count"].products}</div>;
+        }
+        case "actions":
+          return (
+            <div className="relative flex justify-start items-center gap-5">
+              <Tooltip content="Edit Category" color="default">
+                <span className="text-lg text-blue-400 cursor-pointer active:opacity-50">
+                  <FaEdit onClick={() => handleEdit(category.id)} />
+                </span>
+              </Tooltip>
+              <Tooltip color="danger" content="Delete Category">
+                <span className="text-lg text-danger cursor-pointer active:opacity-50">
+                  <FaTrashAlt onClick={() => handleDelete(category)} />
+                </span>
+              </Tooltip>
+            </div>
+          );
+        default:
+          return cellValue;
       }
-      case "actions":
-        return (
-          <div className="relative flex justify-start items-center gap-5">
-            <Tooltip content="Edit Category" color="default">
-              <span className="text-lg text-blue-400 cursor-pointer active:opacity-50">
-                <FaEdit onClick={() => handleEdit(user.id)} />
-              </span>
-            </Tooltip>
-            <Tooltip color="danger" content="Delete Category">
-              <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                <FaTrashAlt onClick={() => handleDelete(user)} />
-              </span>
-            </Tooltip>
-          </div>
-        );
-      default:
-        return cellValue;
-    }
-  }, []);
+    },
+    []
+  );
 
   const onNextPage = React.useCallback(() => {
     if (page < pages) {
@@ -218,17 +234,18 @@ export default function Page() {
     );
   }, [
     filterValue,
-    statusFilter,
     onRowsPerPageChange,
     categories.length,
     onSearchChange,
-    hasSearchFilter,
+    onClear,
+    router,
   ]);
 
   const bottomContent = React.useMemo(() => {
     return (
       <div className="py-2 px-2 flex justify-between items-center">
         <span className="w-[30%] text-small text-default-400">
+          {console.log({ selectedKeys })}
           {selectedKeys === "all"
             ? "All items selected"
             : `${selectedKeys.size} of ${filteredItems.length} selected`}
@@ -262,7 +279,14 @@ export default function Page() {
         </div>
       </div>
     );
-  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+  }, [
+    selectedKeys,
+    filteredItems.length,
+    page,
+    pages,
+    onPreviousPage,
+    onNextPage,
+  ]);
 
   return (
     <div className="p-10">
@@ -297,7 +321,7 @@ export default function Page() {
           {(item) => (
             <TableRow key={item.id}>
               {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
+                <TableCell>{renderCell(item, columnKey as string)}</TableCell>
               )}
             </TableRow>
           )}

@@ -40,7 +40,7 @@ const Page = () => {
       setToast("Please add product in cart.");
       router.push("/");
     }
-  }, [ordersInfo]);
+  }, [ordersInfo, emptyCart, router, setToast]);
 
   const appearance = {
     theme: "stripe",

@@ -1,3 +1,4 @@
+import { AxiosError, AxiosResponse } from "axios";
 import { axiosDelete, createUrl, get, patch, post } from "./api-client";
 
 export const addCategory = async (name: string) => {
@@ -45,12 +46,15 @@ export const editCategory = async (id: string, category: string) => {
   }
 };
 
-export const deleteCategory = async (id: string) => {
+export const deleteCategory = async (
+  id: string
+): Promise<AxiosResponse | AxiosError> => {
   try {
-    const response = await axiosDelete(createUrl(`/api/categories/${id}`));
+    const response: AxiosResponse = await axiosDelete(
+      createUrl(`/api/categories/${id}`)
+    );
     return response;
   } catch (error) {
-    console.log(error);
-    return error;
+    return error as AxiosError;
   }
 };

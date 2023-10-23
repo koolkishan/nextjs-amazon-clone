@@ -3,9 +3,20 @@
 import { getOrder } from "@/lib/api/orders";
 import React, { useEffect, useState } from "react";
 import { Product } from "./components";
+import { ProductType } from "@/utils/types";
+
+interface OrderStatusType {
+  paymentMode: "stripe" | "cash-on-delivery";
+}
+interface OrderType {
+  products: ProductType[];
+  price: string;
+  status: OrderStatusType;
+  paymentStatus: boolean;
+}
 
 const Page = ({ params: { orderId } }: { params: { orderId: string } }) => {
-  const [order, setOrder] = useState(undefined);
+  const [order, setOrder] = useState<OrderType | undefined>(undefined);
   useEffect(() => {
     const getData = async () => {
       const response = await getOrder(orderId);
