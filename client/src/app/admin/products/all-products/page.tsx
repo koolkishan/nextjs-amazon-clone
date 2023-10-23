@@ -31,6 +31,26 @@ import { useAppStore } from "@/store/store";
 
 type User = any;
 
+type Product = {
+  category: {
+    id: string;
+  };
+  order: {
+    id: string;
+  }[];
+  colors: string[];
+  createdAt: string;
+  description: string[];
+  discountPrice: number;
+  id: string;
+  images: string[];
+  salePrice: number;
+  title: string;
+  updatedAt: string;
+  variants: string[];
+  _count: { order: number };
+};
+
 export default function Page() {
   const router = useRouter();
   const [filterValue, setFilterValue] = React.useState("");
@@ -38,7 +58,6 @@ export default function Page() {
     new Set([])
   );
 
-  const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: "age",
@@ -50,14 +69,15 @@ export default function Page() {
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = columns;
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [deleteId, setdeleteId] = useState(undefined);
+  const [deleteId, setdeleteId] = useState<string | undefined>(undefined);
   const { setToast } = useAppStore();
 
   useEffect(() => {
     const fetchProducts = async () => {
       const response = await getAllProducts();
+      console.log({ response });
       if (response) {
         setProducts(response);
       }
@@ -65,18 +85,23 @@ export default function Page() {
     fetchProducts();
   }, []);
 
-  const handleDelete = (product: string) => {
-    if (product?._count?.orders > 0)
-      return setToast("Cannot delete product with products.");
-    setdeleteId(product.id);
-    onOpen();
-  };
+  const handleDelete = React.useCallback(
+    (product: Product) => {
+      if (product?._count?.order > 0) {
+        setToast("Cannot delete product with orders.");
+      } else {
+        setdeleteId(product.id);
+        onOpen();
+      }
+    },
+    [setToast, setdeleteId, onOpen]
+  );
 
   const confirmDelete = async () => {
-    const response = await deleteProduct(id);
+    const response = await deleteProduct(deleteId as string);
     if (response) {
       setProducts((prevProducts) =>
-        prevProducts.filter((product) => product.id !== id)
+        prevProducts.filter((product) => product.id !== deleteId)
       );
       setToast("Product deleted successfully.");
     } else setToast("Unable to delete product.");
@@ -89,13 +114,13 @@ export default function Page() {
     let filteredproducts = [...products];
 
     if (hasSearchFilter) {
-      filteredproducts = filteredproducts.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase())
+      filteredproducts = filteredproducts.filter((product) =>
+        product.title.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
 
     return filteredproducts;
-  }, [products, filterValue, statusFilter]);
+  }, [products, hasSearchFilter, filterValue]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -116,32 +141,35 @@ export default function Page() {
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
-    const cellValue = user[columnKey as keyof User];
+  const renderCell = React.useCallback(
+    (user: Product, columnKey: React.Key) => {
+      const cellValue = user[columnKey as keyof Product];
 
-    switch (columnKey) {
-      case "actions":
-        return (
-          <div className="relative flex justify-start items-center gap-5">
-            <Tooltip content="Edit Product" color="default">
-              <span
-                className="text-lg text-blue-400 cursor-pointer active:opacity-50"
-                onClick={() => handleEdit(user.id)}
-              >
-                <FaEdit />
-              </span>
-            </Tooltip>
-            <Tooltip color="danger" content="Delete Product">
-              <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                <FaTrashAlt onClick={() => handleDelete(user)} />
-              </span>
-            </Tooltip>
-          </div>
-        );
-      default:
-        return cellValue;
-    }
-  }, []);
+      switch (columnKey) {
+        case "actions":
+          return (
+            <div className="relative flex justify-start items-center gap-5">
+              <Tooltip content="Edit Product" color="default">
+                <span
+                  className="text-lg text-blue-400 cursor-pointer active:opacity-50"
+                  onClick={() => handleEdit(user.id)}
+                >
+                  <FaEdit />
+                </span>
+              </Tooltip>
+              <Tooltip color="danger" content="Delete Product">
+                <span className="text-lg text-danger cursor-pointer active:opacity-50">
+                  <FaTrashAlt onClick={() => handleDelete(user)} />
+                </span>
+              </Tooltip>
+            </div>
+          );
+        default:
+          return <>{cellValue}</>;
+      }
+    },
+    [handleDelete]
+  );
 
   const onNextPage = React.useCallback(() => {
     if (page < pages) {
@@ -220,11 +248,11 @@ export default function Page() {
     );
   }, [
     filterValue,
-    statusFilter,
     onSearchChange,
-    onRowsPerPageChange,
     products.length,
-    hasSearchFilter,
+    onRowsPerPageChange,
+    onClear,
+    router,
   ]);
 
   const bottomContent = React.useMemo(() => {
@@ -264,7 +292,14 @@ export default function Page() {
         </div>
       </div>
     );
-  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+  }, [
+    selectedKeys,
+    filteredItems.length,
+    page,
+    pages,
+    onPreviousPage,
+    onNextPage,
+  ]);
 
   return (
     <div className="p-10">

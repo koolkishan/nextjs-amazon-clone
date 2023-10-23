@@ -34,7 +34,10 @@ export const getCategory = async (id: string) => {
   }
 };
 
-export const editCategory = async (id: string, category: string) => {
+export const editCategory = async (
+  id: string,
+  category: string
+): Promise<AxiosResponse | AxiosError> => {
   try {
     const response = await patch(createUrl(`/api/categories/${id}`), {
       name: category,
@@ -42,7 +45,7 @@ export const editCategory = async (id: string, category: string) => {
     return response;
   } catch (error) {
     console.log(error);
-    return error;
+    return error as AxiosError;
   }
 };
 

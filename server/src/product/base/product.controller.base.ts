@@ -121,6 +121,7 @@ export class ProductControllerBase {
         title: true,
         updatedAt: true,
         variants: true,
+        _count: true,
       },
     });
   }

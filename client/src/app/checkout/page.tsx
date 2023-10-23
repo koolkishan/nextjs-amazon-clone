@@ -42,19 +42,17 @@ const Page = () => {
     }
   }, [ordersInfo, emptyCart, router, setToast]);
 
-  const appearance = {
-    theme: "stripe",
-  };
-  const options = {
-    clientSecret,
-    appearance,
-  };
+  const appearance = {};
+  const options = {};
   return (
     <div>
       {orderCreated && (
         <>
           {!isCod && clientSecret.length > 0 && (
-            <Elements options={options} stripe={stripePromise}>
+            <Elements
+              options={{ clientSecret, appearance: { theme: "stripe" } }}
+              stripe={stripePromise}
+            >
               <StripeForm clientSecret={clientSecret} />
             </Elements>
           )}

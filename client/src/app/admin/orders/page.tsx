@@ -74,7 +74,7 @@ export default function Page() {
     }
 
     return filteredUsers;
-  }, [orders, filterValue]);
+  }, [orders, hasSearchFilter, filterValue]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -95,61 +95,68 @@ export default function Page() {
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((order: User, columnKey: React.Key) => {
-    const cellValue = order[columnKey as keyof User];
+  const renderCell = React.useCallback(
+    (order: User, columnKey: React.Key) => {
+      const cellValue = order[columnKey as keyof User];
 
-    switch (columnKey) {
-      case "user":
-        return cellValue.username;
-      case "_count":
-        return cellValue.products;
-      case "createdAt":
-        return cellValue.split("T")[0];
-      case "status":
-        return (
-          <Chip
-            className="capitalize"
-            color={cellValue.paymentMode === "stripe" ? "secondary" : "success"}
-            size="sm"
-            variant="flat"
-          >
-            {cellValue.paymentMode === "stripe" ? "Stripe" : "Cash on delivery"}
-          </Chip>
-        );
+      switch (columnKey) {
+        case "user":
+          return cellValue.username;
+        case "_count":
+          return cellValue.products;
+        case "createdAt":
+          return cellValue.split("T")[0];
+        case "status":
+          return (
+            <Chip
+              className="capitalize"
+              color={
+                cellValue.paymentMode === "stripe" ? "secondary" : "success"
+              }
+              size="sm"
+              variant="flat"
+            >
+              {cellValue.paymentMode === "stripe"
+                ? "Stripe"
+                : "Cash on delivery"}
+            </Chip>
+          );
 
-      case "paymentStatus":
-        return (
-          <Chip
-            className="capitalize"
-            color={cellValue ? "success" : "danger"}
-            size="sm"
-            variant="flat"
-          >
-            {cellValue ? "Completed" : "Pending"}
-          </Chip>
-        );
+        case "paymentStatus":
+          return (
+            <Chip
+              className="capitalize"
+              color={cellValue ? "success" : "danger"}
+              size="sm"
+              variant="flat"
+            >
+              {cellValue ? "Completed" : "Pending"}
+            </Chip>
+          );
 
-      case "actions":
-        return (
-          <div className="relative flex justify-start items-center gap-2">
-            <Tooltip color="primary" content="View Order">
-              <Button
-                isIconOnly
-                size="sm"
-                variant="light"
-                className=""
-                color="primary"
-                onClick={() => router.push(`/admin/orders/${order.id}`)}
-              >
-                <FaEye />
-              </Button>
-            </Tooltip>
-          </div>
-        );
-      default:
-        return cellValue;
-    }
-  }, []);
+        case "actions":
+          return (
+            <div className="relative flex justify-start items-center gap-2">
+              <Tooltip color="primary" content="View Order">
+                <Button
+                  isIconOnly
+                  size="sm"
+                  variant="light"
+                  className=""
+                  color="primary"
+                  onClick={() => router.push(`/admin/orders/${order.id}`)}
+                >
+                  <FaEye />
+                </Button>
+              </Tooltip>
+            </div>
+          );
+        default:
+          return cellValue;
+      }
+    },
+    [router]
+  );
 
   const onNextPage = React.useCallback(() => {
     if (page < pages) {
@@ -219,9 +226,9 @@ export default function Page() {
   }, [
     filterValue,
     onSearchChange,
-    onRowsPerPageChange,
     orders.length,
-    hasSearchFilter,
+    onRowsPerPageChange,
+    onClear,
   ]);
 
   const bottomContent = React.useMemo(() => {
@@ -261,7 +268,14 @@ export default function Page() {
         </div>
       </div>
     );
-  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+  }, [
+    selectedKeys,
+    filteredItems.length,
+    page,
+    pages,
+    onPreviousPage,
+    onNextPage,
+  ]);
 
   return (
     <div className="p-10">

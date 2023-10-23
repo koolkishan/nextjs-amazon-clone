@@ -39,6 +39,8 @@ interface Category {
   _count: Count;
 }
 
+type ValidColumnNames = keyof Category;
+
 export default function Page() {
   const [categories, setCategories] = useState<Category[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -56,12 +58,15 @@ export default function Page() {
     getData();
   }, []);
 
-  const handleDelete = (category: Category) => {
-    if (category._count.products > 0)
-      return setToast("Cannot delete category with products.");
-    setdeleteId(category.id);
-    onOpen();
-  };
+  const handleDelete = React.useCallback(
+    (category: Category) => {
+      if (category._count.products > 0)
+        return setToast("Cannot delete category with products.");
+      setdeleteId(category.id);
+      onOpen();
+    },
+    [setToast, setdeleteId, onOpen]
+  );
 
   const confirmDelete = async () => {
     if (deleteId) {
@@ -81,12 +86,17 @@ export default function Page() {
     onClose();
   };
 
-  const handleEdit = async (id: string) => {
-    router.push(`/admin/category/edit-category/${id}`);
-  };
+  const handleEdit = React.useCallback(
+    (id: string) => {
+      router.push(`/admin/category/edit-category/${id}`);
+    },
+    [router]
+  );
 
   const [filterValue, setFilterValue] = React.useState("");
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
+  const [selectedKeys, setSelectedKeys] = React.useState<Set<string> | "all">(
+    new Set()
+  );
 
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState({
@@ -122,8 +132,8 @@ export default function Page() {
 
   const sortedItems = React.useMemo(() => {
     return [...items].sort((a, b) => {
-      const first = a[sortDescriptor.column];
-      const second = b[sortDescriptor.column];
+      const first = a[sortDescriptor.column as ValidColumnNames];
+      const second = b[sortDescriptor.column as ValidColumnNames];
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
@@ -132,7 +142,7 @@ export default function Page() {
 
   const renderCell = React.useCallback(
     (category: Category, columnKey: string) => {
-      const cellValue = category[columnKey];
+      const cellValue = category[columnKey as ValidColumnNames];
 
       switch (columnKey) {
         case "products": {
@@ -154,10 +164,10 @@ export default function Page() {
             </div>
           );
         default:
-          return cellValue;
+          return <>{cellValue}</>;
       }
     },
-    []
+    [handleDelete, handleEdit]
   );
 
   const onNextPage = React.useCallback(() => {
@@ -172,12 +182,15 @@ export default function Page() {
     }
   }, [page]);
 
-  const onRowsPerPageChange = React.useCallback((e) => {
-    setRowsPerPage(Number(e.target.value));
-    setPage(1);
-  }, []);
+  const onRowsPerPageChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setRowsPerPage(Number(e.target.value));
+      setPage(1);
+    },
+    []
+  );
 
-  const onSearchChange = React.useCallback((value) => {
+  const onSearchChange = React.useCallback((value: string) => {
     if (value) {
       setFilterValue(value);
       setPage(1);
@@ -245,7 +258,6 @@ export default function Page() {
     return (
       <div className="py-2 px-2 flex justify-between items-center">
         <span className="w-[30%] text-small text-default-400">
-          {console.log({ selectedKeys })}
           {selectedKeys === "all"
             ? "All items selected"
             : `${selectedKeys.size} of ${filteredItems.length} selected`}
@@ -300,11 +312,11 @@ export default function Page() {
         }}
         selectedKeys={selectedKeys}
         selectionMode="multiple"
-        sortDescriptor={sortDescriptor}
+        sortDescriptor={sortDescriptor as any}
         topContent={topContent}
         topContentPlacement="outside"
-        onSelectionChange={setSelectedKeys}
-        onSortChange={setSortDescriptor}
+        onSelectionChange={setSelectedKeys as any}
+        onSortChange={setSortDescriptor as any}
       >
         <TableHeader columns={headerColumns}>
           {(column) => (
