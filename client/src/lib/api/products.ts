@@ -1,9 +1,18 @@
-import { createUrl, post, get, axiosDelete } from "./api-client";
+import { AxiosError, AxiosResponse } from "axios";
+import { createUrl, post, get, axiosDelete, patch } from "./api-client";
 
 export const addProduct = async (data: any) => {
   try {
     const response = await post(createUrl("/api/products/"), { ...data });
+    return response.status === 201 ? true : false;
+  } catch (error) {
+    console.log({ error });
+  }
+};
 
+export const updateProduct = async (data: any, id: string) => {
+  try {
+    const response = await patch(createUrl(`/api/products/${id}`), { data });
     return response.status === 201 ? true : false;
   } catch (error) {
     console.log({ error });
@@ -60,9 +69,15 @@ export const deleteProduct = async (id: string) => {
   }
 };
 
-export const editProduct = async (id: string, data: any) => {
+export const editProduct = async (
+  id: string,
+  data: any
+): Promise<AxiosResponse | AxiosError> => {
   try {
+    console.log({ data });
+    const response = await patch(createUrl(`/api/products/${id}`), { ...data });
+    return response;
   } catch (error) {
-    console.log({ error });
+    return error as AxiosError;
   }
 };

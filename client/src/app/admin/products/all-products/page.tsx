@@ -77,7 +77,6 @@ export default function Page() {
   useEffect(() => {
     const fetchProducts = async () => {
       const response = await getAllProducts();
-
       if (response) {
         setProducts(response);
       }
@@ -107,8 +106,6 @@ export default function Page() {
     } else setToast("Unable to delete product.");
     onClose();
   };
-
-  const handleEdit = async (id: string) => {};
 
   const filteredItems = React.useMemo(() => {
     let filteredproducts = [...products];
@@ -152,7 +149,9 @@ export default function Page() {
               <Tooltip content="Edit Product" color="default">
                 <span
                   className="text-lg text-blue-400 cursor-pointer active:opacity-50"
-                  onClick={() => handleEdit(user.id)}
+                  onClick={() =>
+                    router.push(`/admin/products/edit-product/${user.id}`)
+                  }
                 >
                   <FaEdit />
                 </span>
@@ -164,6 +163,8 @@ export default function Page() {
               </Tooltip>
             </div>
           );
+        case "_count":
+          return <>{cellValue.order}</>;
         default:
           return <>{cellValue}</>;
       }

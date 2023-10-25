@@ -7,7 +7,6 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  User,
 } from "@nextui-org/react";
 
 const columns = [
@@ -37,7 +36,12 @@ export default function RecentOrders({
             user: { username: string };
           }
         ];
-      return <>{cellValue}</>;
+      if (columnKey === "user") {
+        const userData = cellValue as { username: string };
+        return <>{userData?.username}</>;
+      } else {
+        return <>{cellValue}</>;
+      }
     },
     []
   );

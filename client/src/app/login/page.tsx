@@ -1,7 +1,7 @@
 "use client";
 import { login } from "@/lib/api/auth";
 import { useAppStore } from "@/store/store";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosError } from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

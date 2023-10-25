@@ -1,7 +1,6 @@
 "use client";
 import { signup } from "@/lib/api/auth";
 import { useAppStore } from "@/store/store";
-import { AxiosResponse } from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
